@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Gamescore.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gamescore.Data.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
         protected readonly ApplicationDbContext context;
         protected DbSet<TEntity> Entities => context.Set<TEntity>();
@@ -17,7 +18,7 @@ namespace Gamescore.Data.Repositories
             return await Entities.ToListAsync();
         }
 
-        public async Task<TEntity?> Get(int id)
+        public async Task<TEntity?> Get(Guid id)
         {
             return await Entities.FindAsync(id);
         }
