@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gamescore.Models
+namespace Gamescore.Entities
 {
 
     // Для каждого участника нужно иметь возможность:
@@ -8,12 +8,10 @@ namespace Gamescore.Models
     // указать кто победил,
     // количество очков, цвет или название команды.
 
-    public class Player
+    public class Player : BaseEntity
     {
-        [Key]
-        public virtual int Id { get; set; }
 
-        // User
+        // User (registered / non-registered)
 
         public int Points { get; set; }
         public string Team { get; set; }   

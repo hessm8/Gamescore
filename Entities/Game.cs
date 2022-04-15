@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gamescore.Models
+namespace Gamescore.Entities
 {
-    public class Game
+    public class Game : BaseEntity
     {
-        [Key]
-        public virtual int Id { get; set; }
+        
         [Required]
         public string Alias { get; set; }
 

@@ -1,20 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gamescore.Models
+namespace Gamescore.Entities
 {
-    public class UserProfile
+    public class UserProfile : BaseEntity
     {
-        [Key]
-        public virtual int UserId { get; set; }
+        //[Key]
+        //public virtual int UserId { get; set; }
         // have property of User type?
 
         public virtual ICollection<Friend> Friends { get; set; } = new List<Friend>();
         public virtual ICollection<Game> Collection { get; set; } = new List<Game>();
     }
 
-    public class Friend
+    public class Friend : BaseEntity
     {
-        public virtual int Id { get; set; }
 
         public virtual UserProfile RequestedBy { get; set; } = null!;
         public virtual UserProfile RequestedTo { get; set; } = null!;

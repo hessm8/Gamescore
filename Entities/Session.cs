@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gamescore.Models
+namespace Gamescore.Entities
 {
-    public class Session
+    public class Session : BaseEntity
     {
-        [Key]
-        public virtual int Id { get; set; }
         [Required]
         public virtual Game Game { get; set; }
 
