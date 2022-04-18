@@ -1,13 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gamescore.Entities
 {
-
-    // Для каждого участника нужно иметь возможность:
-    // добавить как зарегистрированного игрока так и простого оппонента,
-    // указать кто победил,
-    // количество очков, цвет или название команды.
-
+    [Table("Players")]
     public class Player : BaseEntity
     {
 
@@ -19,4 +15,9 @@ namespace Gamescore.Entities
         public bool IsWinner { get; set; }
 
     }
+
+    // Для каждого участника нужно иметь возможность:
+    // добавить как зарегистрированного игрока так и простого оппонента,
+    // указать кто победил,
+    // количество очков, цвет или название команды.
 }

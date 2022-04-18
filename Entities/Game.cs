@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gamescore.Entities
 {
+    [Table("Games")]
     public class Game : BaseEntity
     {
         
@@ -15,13 +17,13 @@ namespace Gamescore.Entities
 
         public DateTime? ReleaseDate { get; set; }
 
-        public int MinAge { get; set; }
+        public int AgeMin { get; set; }
 
-        public int MinPlayers { get; set; }
-        public int MaxPlayers { get; set; }
+        public int PlayersMin { get; set; }
+        public int PlayersMax { get; set; }
 
-        public int MinDuration { get; set; }
-        public int MaxDuration { get; set; }
+        public int DurationMin { get; set; }
+        public int DurationMax { get; set; }
     }
 
 }

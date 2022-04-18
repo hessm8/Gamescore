@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gamescore.Entities
 {
+    [Table("Profiles")]
     public class UserProfile : BaseEntity
     {
         //[Key]
