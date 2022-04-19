@@ -24,6 +24,9 @@ namespace Gamescore.Entities
 
         public int DurationMin { get; set; }
         public int DurationMax { get; set; }
+
+        // Many to many (for user collection)
+        public virtual ICollection<UserProfile> Users { get; set; } = new List<UserProfile>();
     }
 
 }
