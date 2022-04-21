@@ -4,8 +4,7 @@ namespace Gamescore.Entities
 {
     public class BaseEntity
     {
-        [Key]
-        [Required]
+        [Key, Required]
         public virtual Guid Id { get; set; }
     }
 }

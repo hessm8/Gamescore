@@ -6,27 +6,23 @@ namespace Gamescore.Entities
     [Table("Games")]
     public class Game : BaseEntity
     {
-        
         [Required]
-        public string Alias { get; set; }
-
-        public string Name { get; set; }
-        public string NameLocalized { get; set; }
-
-        public byte[] Image { get; set; }
+        public string Alias { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string? NameLocalized { get; set; }
+        public byte[]? Image { get; set; }
 
         public DateTime? ReleaseDate { get; set; }
 
         public int AgeMin { get; set; }
-
         public int PlayersMin { get; set; }
         public int PlayersMax { get; set; }
-
         public int DurationMin { get; set; }
         public int DurationMax { get; set; }
 
-        // Many to many (for user collection)
-        public virtual ICollection<UserProfile> Users { get; set; } = new List<UserProfile>();
-    }
+        // User collection / rating with current game
+        public virtual ICollection<User> FavoritedBy { get; set; } = new List<User>();
+        public virtual ICollection<Rating> RatedBy { get; set; } = new List<Rating>();
 
+    }
 }

@@ -6,18 +6,14 @@ namespace Gamescore.Entities
     [Table("Players")]
     public class Player : BaseEntity
     {
+        [Key, Required]
+        public Guid OwnerId { get; set; }
+        public virtual User Owner { get; set; } = null!;
+        public Guid? UserPlayerId { get; set; }
+        public virtual User? UserPlayer { get; set; }
+        public string? Alias { get; set; }
 
-        // User (registered / non-registered)
-
-        public int Points { get; set; }
-        public string Team { get; set; }   
-        
-        public bool IsWinner { get; set; }
-
+        // Matches this player participated in
+        public virtual ICollection<MatchPlayer> Matches { get; set; } = new List<MatchPlayer>();
     }
-
-    // Для каждого участника нужно иметь возможность:
-    // добавить как зарегистрированного игрока так и простого оппонента,
-    // указать кто победил,
-    // количество очков, цвет или название команды.
 }
