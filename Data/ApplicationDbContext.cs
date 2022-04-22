@@ -9,10 +9,7 @@ namespace Gamescore.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
-            //Database.EnsureDeleted();
-            Database.EnsureCreated();
-        }
+        { }
 
         public DbSet<Game> Games => Set<Game>();
         public DbSet<Match> Sessions => Set<Match>();
