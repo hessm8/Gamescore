@@ -8,9 +8,9 @@ namespace Gamescore.Data.Repositories
         protected readonly ApplicationDbContext context;
         protected DbSet<TEntity> Entities => context.Set<TEntity>();
 
-        public Repository(ApplicationDbContext appDbContext)
+        public Repository(ApplicationDbContext ApplicationDbContext)
         {
-            context = appDbContext;
+            context = ApplicationDbContext;
         }
 
         public async Task<IEnumerable<TEntity>> GetAll()

@@ -1,10 +1,11 @@
 ﻿using Gamescore.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gamescore.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -15,7 +16,6 @@ namespace Gamescore.Data
 
         public DbSet<Game> Games => Set<Game>();
         public DbSet<Match> Sessions => Set<Match>();
-        public DbSet<UserProfile> Profiles => Set<UserProfile>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

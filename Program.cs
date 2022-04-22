@@ -1,6 +1,7 @@
 using Gamescore.Data;
 using Gamescore.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,11 +12,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<AppUser>(/*options => options.SignIn.RequireConfirmedAccount = true*/)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-//builder.Services.AddIdentity<User, IdentityRole>()
-//                .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+//    .AddDefaultTokenProviders()
+//    .AddUserStore<UserStore<AppUser, AppRole, ApplicationDbContext, Guid>>()
+//    .AddRoleStore<RoleStore<AppRole, ApplicationDbContext, Guid>>();
 
 builder.Services.AddControllersWithViews();
 

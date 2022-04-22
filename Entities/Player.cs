@@ -8,10 +8,10 @@ namespace Gamescore.Entities
     {
         [Required]
         public Guid OwnerId { get; set; }
-        public virtual UserProfile Owner { get; set; } = null!;
+        public virtual AppUser Owner { get; set; } = null!;
         
         public Guid? UserPlayerId { get; set; }
-        public virtual UserProfile? UserPlayer { get; set; }
+        public virtual AppUser? UserPlayer { get; set; }
         
         public string? Alias { get; set; }
 

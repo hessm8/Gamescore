@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Gamescore.Entities
 {
-    // Note: Will be changed to IdentityUser
-    public class UserProfile : BaseEntity // : IdentityUser
+    public class AppUser : IdentityUser<Guid>
     {
         // User collection / rating of current user
         public virtual ICollection<Game> GamesFavorited { get; set; } = new List<Game>();
@@ -30,14 +29,16 @@ namespace Gamescore.Entities
         public virtual ICollection<Player> Players { get; set; } = new List<Player>();
     }
 
+    //public class AppRole : IdentityRole<Guid> { }
+
     [Table("FriendRequests")]
     public class FriendRequest
     {
         public Guid SentById { get; set; }
-        public virtual UserProfile SentBy { get; set; } = null!;
+        public virtual AppUser SentBy { get; set; } = null!;
 
         public Guid SentToId { get; set; }
-        public virtual UserProfile SentTo { get; set; } = null!;
+        public virtual AppUser SentTo { get; set; } = null!;
 
         public FriendStatus Status { get; set; }
 
