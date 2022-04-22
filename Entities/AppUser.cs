@@ -29,7 +29,7 @@ namespace Gamescore.Entities
         public virtual ICollection<Player> Players { get; set; } = new List<Player>();
     }
 
-    //public class AppRole : IdentityRole<Guid> { }
+    public class AppRole : IdentityRole<Guid> { }
 
     [Table("FriendRequests")]
     public class FriendRequest
