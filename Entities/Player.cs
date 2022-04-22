@@ -6,11 +6,13 @@ namespace Gamescore.Entities
     [Table("Players")]
     public class Player : BaseEntity
     {
-        [Key, Required]
+        [Required]
         public Guid OwnerId { get; set; }
-        public virtual User Owner { get; set; } = null!;
+        public virtual UserProfile Owner { get; set; } = null!;
+        
         public Guid? UserPlayerId { get; set; }
-        public virtual User? UserPlayer { get; set; }
+        public virtual UserProfile? UserPlayer { get; set; }
+        
         public string? Alias { get; set; }
 
         // Matches this player participated in

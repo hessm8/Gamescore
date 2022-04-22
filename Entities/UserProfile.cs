@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Gamescore.Entities
 {
-    public class User : IdentityUser
+    // Note: Will be changed to IdentityUser
+    public class UserProfile : BaseEntity // : IdentityUser
     {
         // User collection / rating of current user
         public virtual ICollection<Game> GamesFavorited { get; set; } = new List<Game>();
-        public virtual ICollection<Rating> GamesRated { get; set; } = new List<Rating>();       
+        public virtual ICollection<Rating> GamesRated { get; set; } = new List<Rating>();
 
         [NotMapped]
         public virtual ICollection<FriendRequest> Friends
@@ -25,17 +26,18 @@ namespace Gamescore.Entities
 
         // Players where Owner is this user
         public virtual ICollection<Player> PlayersCreated { get; set; } = new List<Player>();
-        public virtual ICollection<Player> MatchesPlayed { get; set; } = new List<Player>();
+        // Players where UserPlayer is this user
+        public virtual ICollection<Player> Players { get; set; } = new List<Player>();
     }
 
     [Table("FriendRequests")]
     public class FriendRequest
     {
         public Guid SentById { get; set; }
-        public virtual User SentBy { get; set; } = null!;
+        public virtual UserProfile SentBy { get; set; } = null!;
 
         public Guid SentToId { get; set; }
-        public virtual User SentTo { get; set; } = null!;
+        public virtual UserProfile SentTo { get; set; } = null!;
 
         public FriendStatus Status { get; set; }
 

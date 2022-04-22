@@ -21,7 +21,7 @@ namespace Gamescore.Entities
         public int DurationMax { get; set; }
 
         // User collection / rating with current game
-        public virtual ICollection<User> FavoritedBy { get; set; } = new List<User>();
+        public virtual ICollection<UserProfile> FavoritedBy { get; set; } = new List<UserProfile>();
         public virtual ICollection<Rating> RatedBy { get; set; } = new List<Rating>();
 
     }

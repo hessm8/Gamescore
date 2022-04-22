@@ -20,9 +20,9 @@ namespace Gamescore.Entities
 
     public class MatchPlayer
     {
-        [Required]
+        public Guid MatchId { get; set; }
         public virtual Match Match { get; set; } = null!;
-        [Required]
+        public Guid PlayerId { get; set; }
         public virtual Player Player { get; set; } = null!;
 
         public string? Team { get; set; }

@@ -9,7 +9,7 @@ namespace Gamescore.Entities
         [Required]
         public virtual Game Game { get; set; } = null!;
         [Required]
-        public virtual User User { get; set; } = null!;
+        public virtual UserProfile User { get; set; } = null!;
 
         public float RatingGameplay { get; set; }
         public float RatingOriginality { get; set; }

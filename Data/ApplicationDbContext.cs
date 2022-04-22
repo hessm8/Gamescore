@@ -9,12 +9,13 @@ namespace Gamescore.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
         public DbSet<Game> Games => Set<Game>();
         public DbSet<Match> Sessions => Set<Match>();
-        public DbSet<User> Profiles => Set<User>();
+        public DbSet<UserProfile> Profiles => Set<UserProfile>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,9 +38,6 @@ namespace Gamescore.Data
 
             // Player
 
-            //builder.Entity<Player>()
-            //    .HasKey(f => new { f.SentById, f.SentToId });
-
             builder.Entity<Player>()
                 .HasOne(player => player.Owner)
                 .WithMany(user => user.PlayersCreated)
@@ -47,9 +45,23 @@ namespace Gamescore.Data
 
             builder.Entity<Player>()
                 .HasOne(player => player.UserPlayer)
-                .WithMany(user => user.MatchesPlayed)
+                .WithMany(user => user.Players)
                 .HasForeignKey(player => player.UserPlayerId);
 
+            // Match-Player
+
+            builder.Entity<MatchPlayer>()
+                .HasKey(mp => new { mp.MatchId, mp.PlayerId });
+
+            builder.Entity<MatchPlayer>()
+                .HasOne(mp => mp.Match)
+                .WithMany(match => match.Players)
+                .HasForeignKey(mp => mp.MatchId);
+
+            builder.Entity<MatchPlayer>()
+                .HasOne(mp => mp.Player)
+                .WithMany(match => match.Matches)
+                .HasForeignKey(mp => mp.PlayerId);
         }
     }
 }
