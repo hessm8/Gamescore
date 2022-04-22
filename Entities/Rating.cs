@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Gamescore.Entities
 {
     [Table("Ratings")]
-    public class Rating : BaseEntity
+    public class Rating
     {
-        [Required]
+        public Guid GameId { get; set; }
         public virtual Game Game { get; set; } = null!;
-        [Required]
+        public Guid UserId { get; set; }
         public virtual AppUser User { get; set; } = null!;
 
         public float RatingGameplay { get; set; }

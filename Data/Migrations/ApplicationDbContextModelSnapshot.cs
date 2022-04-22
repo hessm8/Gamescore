@@ -34,7 +34,7 @@ namespace Gamescore.Data.Migrations
 
                     b.HasIndex("GamesFavoritedId");
 
-                    b.ToTable("AppUserGame");
+                    b.ToTable("AppUserGame", (string)null);
                 });
 
             modelBuilder.Entity("Gamescore.Entities.AppUser", b =>
@@ -118,7 +118,7 @@ namespace Gamescore.Data.Migrations
 
                     b.HasIndex("SentToId");
 
-                    b.ToTable("FriendRequests");
+                    b.ToTable("FriendRequests", (string)null);
                 });
 
             modelBuilder.Entity("Gamescore.Entities.Game", b =>
@@ -161,7 +161,7 @@ namespace Gamescore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Games");
+                    b.ToTable("Games", (string)null);
                 });
 
             modelBuilder.Entity("Gamescore.Entities.Match", b =>
@@ -189,7 +189,7 @@ namespace Gamescore.Data.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("Gamescore.Entities.MatchPlayer", b =>
@@ -213,7 +213,7 @@ namespace Gamescore.Data.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("MatchPlayer");
+                    b.ToTable("MatchPlayer", (string)null);
                 });
 
             modelBuilder.Entity("Gamescore.Entities.Player", b =>
@@ -237,7 +237,7 @@ namespace Gamescore.Data.Migrations
 
                     b.HasIndex("UserPlayerId");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
                 });
 
             modelBuilder.Entity("Gamescore.Entities.Rating", b =>
@@ -267,7 +267,7 @@ namespace Gamescore.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>

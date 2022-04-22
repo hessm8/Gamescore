@@ -41,7 +41,7 @@ namespace Gamescore.Data
             builder.Entity<Player>()
                 .HasOne(player => player.Owner)
                 .WithMany(user => user.PlayersCreated)
-                .HasForeignKey(player => player.OwnerId);//.OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(player => player.OwnerId);
 
             builder.Entity<Player>()
                 .HasOne(player => player.UserPlayer)
@@ -60,8 +60,23 @@ namespace Gamescore.Data
 
             builder.Entity<MatchPlayer>()
                 .HasOne(mp => mp.Player)
-                .WithMany(match => match.Matches)
+                .WithMany(player => player.Matches)
                 .HasForeignKey(mp => mp.PlayerId);
+
+            // Ratings
+
+            builder.Entity<Rating>()
+                .HasKey(mp => new { mp.GameId, mp.UserId });
+
+            builder.Entity<Rating>()
+                .HasOne(rating => rating.Game)
+                .WithMany(game => game.RatedBy)
+                .HasForeignKey(rating => rating.GameId);
+
+            builder.Entity<Rating>()
+                .HasOne(rating => rating.User)
+                .WithMany(user => user.GamesRated)
+                .HasForeignKey(rating => rating.UserId);
         }
     }
 }
