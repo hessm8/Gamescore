@@ -12,7 +12,7 @@ namespace Gamescore.Entities
         public string? NameLocalized { get; set; }
         public byte[]? Image { get; set; }
 
-        public DateTime? ReleaseDate { get; set; }
+        public int? ReleaseDate { get; set; }
 
         public int AgeMin { get; set; }
         public int PlayersMin { get; set; }

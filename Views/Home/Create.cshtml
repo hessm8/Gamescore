@@ -44,7 +44,7 @@
 
                 <div class="form-group">
                     <label for="game-date">Release date</label>
-                    <input type="date" name="ReleaseDate" class="form-control" id="game-date" value="@Model?.ReleaseDate" />
+                    <input type="number" name="ReleaseDate" class="form-control" id="game-date" placeholder="Year" value="@Model?.ReleaseDate" min="1950" max="2030" />
                 </div>
 
                 <div class="form-group">

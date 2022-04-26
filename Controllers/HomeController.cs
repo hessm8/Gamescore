@@ -43,7 +43,7 @@ namespace Gamescore.Controllers
                     Name = "The Game of Games and Something Else " + i,
                     NameLocalized = "Какая-то Игра и Что-то Еще " + i,
                     AgeMin = i,
-                    ReleaseDate = DateTime.Now,
+                    ReleaseDate = 2015,
                     PlayersMin = 1,
                     PlayersMax = i,
                     DurationMin = 10,
