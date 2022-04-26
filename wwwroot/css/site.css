@@ -24,3 +24,14 @@ body {
 a {
     text-decoration: none !important;
 }
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.form-group label {
+    flex-basis: 150px;
+    margin-right: 1em;
+}

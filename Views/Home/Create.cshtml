@@ -1,0 +1,81 @@
+﻿@model Game
+@{
+    ViewData["Title"] = "Add game";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <form method="post">
+
+        <div class="card" style="width:40%">
+
+            <div class="card-header">
+                Add game
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-group" style="color:red;">@Html.ValidationMessageFor(model => model.Alias)</div>
+                
+                <div class="form-group">
+                    <label for="game-alias">Alias</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="inputGroupPrepend2">games /</span>
+                        <input type="text" name="Alias" class="form-control" id="game-alias" placeholder="URL adress for game" value="@Model?.Alias" />
+                    </div>
+@*                    <div id="game-aliasFeedback" class="invalid-feedback">                      
+                    </div>*@
+                </div>
+
+                <div class="form-group">
+                    <label for="game-name">Name</label>
+                    <input type="text" name="Name" class="form-control" id="game-name" placeholder="Full name of the game" value="@Model?.Name"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="game-name2">Name (localized)</label>
+                    <input type="text" name="NameLocalized" class="form-control" id="game-name2" placeholder="Full name in Russian" value="@Model?.NameLocalized" />
+                </div>
+
+                <div class="form-group">
+                    <label for="game-image">Image (broken?)</label>
+                    <input type="file" name="Image" accept="image/png, image/jpeg" class="form-control" id="game-image" value="@Model?.Image" />
+                </div>
+
+                <div class="form-group">
+                    <label for="game-date">Release date</label>
+                    <input type="date" name="ReleaseDate" class="form-control" id="game-date" value="@Model?.ReleaseDate" />
+                </div>
+
+                <div class="form-group">
+                    <label for="game-age">Min. age</label>
+                    <input type="number" name="AgeMin" class="form-control" id="game-age" value="0" />
+                </div>
+
+                <div class="form-group">
+                    <label for="game-players">Players</label>
+                    <div class="d-flex flex-row justify-content-between minmax">
+                        <input type="number" name="PlayersMin" class="form-control" id="game-players" value="2" min="2" max="8"  />
+                        <input type="number" name="PlayersMax" class="form-control" id="game-players" value="5" min="2" max="15" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="game-alias">Duration</label>
+                    <div class="d-flex flex-row justify-content-between minmax">
+                        <input type="number" name="DurationMin" class="form-control" id="game-time" value="5" min="3" />
+                        <input type="number" name="DurationMax" class="form-control" id="game-time" value="10" min="3" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input class="btn btn-primary" type="submit" value="Create game" />
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+</div>
+

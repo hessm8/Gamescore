@@ -1,0 +1,11 @@
+﻿.minmax {
+
+}
+
+.minmax input {
+
+}
+
+.minmax input:first-child {
+    margin-right: 0.5em;
+}

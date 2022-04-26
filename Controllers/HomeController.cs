@@ -3,16 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 using Gamescore.Entities;
+using Gamescore.Data;
 
 namespace Gamescore.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
+        private ApplicationDbContext context; // Will be replaced with services
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
-            _logger = logger;
+            this.logger = logger;
+            this.context = context;
         }
 
         public IActionResult Index()
@@ -22,32 +25,54 @@ namespace Gamescore.Controllers
 
         public IActionResult Games()
         {           
-            return View(GenerateGames());
+            return View(context.Games.ToList());
+
+            //return View(PlaceholderGames());
         }
 
-        // Dummy games
-        private IEnumerable<Game> GenerateGames()
+        // Dummy games previously used to check games view
+        private IEnumerable<Game> PlaceholderGames()
         {
             var games = new List<Game>();
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 10; i++)
             {
                 games.Add(new Game()
                 {
                     Alias = "game" + i,
-                    Name = "The Game of Chess and Something Else " + i,
+                    Name = "The Game of Games and Something Else " + i,
                     NameLocalized = "Какая-то Игра и Что-то Еще " + i,
                     AgeMin = i,
                     ReleaseDate = DateTime.Now,
                     PlayersMin = 1,
                     PlayersMax = i,
                     DurationMin = 10,
-                    DurationMax = 15 + i,
-
+                    DurationMax = 15 + i
                 });
             }
 
             return games;
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Game game)
+        {
+            if (ModelState.IsValid)
+            {
+                // Will replace EF context later
+                context.Games.Add(game);
+                await context.SaveChangesAsync();
+
+                return RedirectToAction("Games");
+            }
+
+            return View(game);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

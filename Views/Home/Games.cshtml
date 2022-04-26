@@ -4,14 +4,20 @@
 }
 
 @functions{
-    //public string GetSomething()
+
+    //public string GetImage(byte[]? image)
     //{
-    //    return ;
+
     //}
+
 }
 
 <h1>@ViewData["Title"]</h1>
-<p></p>
+
+<p>
+    Can't find a game you're looking for? <b><a href="~/Home/Create">Add one</a></b>
+</p>
+
 <div id="games">
     @foreach (var game in Model)
     {
