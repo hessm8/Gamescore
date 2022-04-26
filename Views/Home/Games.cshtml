@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Game>
+@{
+    ViewData["Title"] = "List of games";
+}
+
+@functions{
+    //public string GetSomething()
+    //{
+    //    return ;
+    //}
+}
+
+<h1>@ViewData["Title"]</h1>
+<p></p>
+<div id="games">
+    @foreach (var game in Model)
+    {
+        <div class="card game">
+
+            <div class="card-header game-points d-flex flex-row justify-content-between">
+
+                <div>
+                    <div><h3><a href="~/Home/Games/@game.Alias">@game.Name</a> (@game.ReleaseDate.Value.Year)</h3></div>
+                    <div><p style="color:gray;">@game.NameLocalized</p></div>
+                </div>
+
+                <div class="game-point d-flex flex-column">
+
+                    <div class="game-icon flex-row">
+                        <img class="icon-small" src="/icons/chess.png" title="Число игроков" />
+                        <div>@game.PlayersMin - @game.PlayersMax</div>
+                    </div>
+                    <div class="game-icon flex-row">
+                        <img class="icon-small" src="/icons/user-restrict.png" title="Мин. возраст" />
+                        <div>@game.AgeMin+</div>
+                    </div>
+                    <div class="game-icon flex-row">
+                        <img class="icon-small" src="/icons/time.png" title="Время партии" />
+                        <div>@game.DurationMin - @game.DurationMax</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body game-desc d-flex flex-column">
+                <div class="d-flex flex-row">
+                    <img class="game-image" src="https://s.tesera.ru/images/items/635932/200x200xpa/photo1.jpg" />
+                    <p>
+                        <b>@game.Name</b> — ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </p>
+                </div>
+                <div>
+                    @*Rating*@
+                    <div class="rating">
+                        @for (int i = 0; i < 10; i++)
+                        {
+                            <img class="icon-small icon-star" src="/icons/star.png" star-index="@i" game-alias="@game.Alias" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+ <script>
+
+     $( ".icon-star" ).hover(
+        function() {
+
+            let game = $( this ).attr( "game-alias" );
+            let curIndex = $( this ).attr( "star-index" );
+
+            $( ".icon-star[game-alias='".concat(game, "']") ).each(function( index ) {
+                if (index <= curIndex) {
+                    $(this).addClass('is-active');
+                }
+            });
+
+        }, 
+        function() {
+
+            $( ".icon-star" ).each(function( index ) {
+                $(this).removeClass('is-active');
+            });
+
+        }
+    );
+
+    //function Test() {
+    //    $("#icon-star").toggleClass('is-active');
+    //}
+
+ </script>
+} 
