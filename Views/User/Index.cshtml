@@ -1,0 +1,67 @@
+﻿@model AppUser
+@{
+    ViewData["Title"] = $"User: {Model.UserName} | Gamescore";
+}
+
+@functions{
+
+}
+
+
+@if (Model.UserName == User.Identity.Name)
+{
+    <p>
+        <b><a asp-area="Identity" asp-page="/Account/Manage/Index" >Account settings</a></b>
+    </p>
+}
+
+
+<div id="user">
+        <div class="card game">
+
+            <div class="card-header">
+
+                <div><h3>@Model.UserName</h3></div>
+
+            </div>
+
+            <div class="card-body game-desc d-flex flex-column">
+
+                <div class="d-flex flex-row">                    
+                    <p>
+                        ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </p>
+                </div>
+
+                <div>
+
+
+                </div>
+            </div>
+        </div>
+
+        
+        <h3>Игры</h3>
+        @if (Model.UserName == User.Identity.Name)
+        {
+            <button>+</button>
+        }
+
+        <div class="profile-games">
+        @foreach (var game in Model.GamesFavorited)
+        {
+            <p>@game.Name</p>
+        }
+        </div>        
+    
+</div>
+
+@section Scripts
+{
+ <script>
+
+
+ </script>
+} 
