@@ -18,50 +18,19 @@ namespace Gamescore.Controllers
             this.context = context;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
         public IActionResult Index()
         {           
             return View(context.Games.ToList());
-
-            //return View(PlaceholderGames());
-        }
-
-        // Dummy games previously used to check games view
-        private IEnumerable<Game> PlaceholderGames()
-        {
-            var games = new List<Game>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                games.Add(new Game()
-                {
-                    Alias = "game" + i,
-                    Name = "The Game of Games and Something Else " + i,
-                    NameLocalized = "Какая-то Игра и Что-то Еще " + i,
-                    AgeMin = i,
-                    ReleaseDate = 2015,
-                    PlayersMin = 1,
-                    PlayersMax = i,
-                    DurationMin = 10,
-                    DurationMax = 15 + i
-                });
-            }
-
-            return games;
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Game game)
+        public async Task<IActionResult> Add(Game game)
         {
             if (ModelState.IsValid)
             {
