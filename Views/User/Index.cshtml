@@ -29,9 +29,7 @@
 
                 <div class="d-flex flex-row">                    
                     <p>
-                        ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Всем привет
                     </p>
                 </div>
 
@@ -43,18 +41,48 @@
         </div>
 
         
-        <h3>Игры</h3>
+        <h3>Игры
         @if (Model.UserName == User.Identity.Name)
         {
-            <button>+</button>
+            <button id="addGame" onclick="toggleModal()">+</button>
         }
+        </h3>
 
         <div class="profile-games">
         @foreach (var game in Model.GamesFavorited)
         {
-            <p>@game.Name</p>
+            <p>* @game.Name</p>
         }
-        </div>        
+        </div>    
+        
+        <div class="modal fade show" style="display:none; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+            <div class="modal-dialog edit-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add to collection</h3>
+                        <button type="button" class="close" onclick="toggleModal()">&times;</button>
+                    </div>
+
+                    <form action="@Url.Action("AddGame")" method="post">
+                        <div class="modal-body">
+                
+                            <div class="form-group">
+                                <label for="game-name">Name</label>
+                                <input type="text" name="Alias" class="form-control" id="game-name" placeholder="Name of the game" />
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn" onclick="toggleModal()">Cancel</button>
+                            <button type="submit" id="submitEditedItem" class="btn btn-primary" onclick="toggleModal()">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
     
 </div>
 
@@ -62,6 +90,13 @@
 {
  <script>
 
+     //$( "#addGame" ).click(function() {
+     //   alert( "Handler for .click() called." );
+     //});
+
+     function toggleModal() {
+         $('.modal').toggle();
+     }
 
  </script>
 } 

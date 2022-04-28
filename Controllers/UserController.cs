@@ -23,17 +23,39 @@ namespace Gamescore.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await userManager.GetUserAsync(User));
+            var user = await userManager.GetUserAsync(User);
+            await context.Entry(user).Collection(x => x.GamesFavorited).LoadAsync();
+
+            return View(user);
         }
 
         [HttpGet]
         [Route("user/{name}")]
         public async Task<IActionResult> Index(string name)
         {
-            var providedUser = await userManager.FindByNameAsync(name);
-            if (providedUser == null) return NotFound();
+            if (string.IsNullOrEmpty(name)) return View(await userManager.GetUserAsync(User));
 
-            return View(providedUser);
+            var user = await userManager.FindByNameAsync(name);
+            if (user == null) return NotFound();
+
+            await context.Entry(user).Collection(x => x.GamesFavorited).LoadAsync();
+
+            return View(user);
+        }
+
+        public async Task<IActionResult> AddGame(UserGameViewModel model)
+        {
+            logger.LogInformation("AddGame called");
+
+            var game = context.Games.Where(x => x.Alias == model.Alias).FirstOrDefault();
+            if (game == null) return NotFound();
+
+            var user = await userManager.GetUserAsync(User);
+            user.GamesFavorited.Add(game);
+            await context.SaveChangesAsync();
+
+
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
