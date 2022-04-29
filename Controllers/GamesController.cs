@@ -38,7 +38,7 @@ namespace Gamescore.Controllers
                 context.Games.Add(game);
                 await context.SaveChangesAsync();
 
-                return RedirectToAction("Games");
+                return RedirectToAction("Index");
             }
 
             return View(game);
