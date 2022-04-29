@@ -1,6 +1,18 @@
-﻿.game {
-    max-width: 70%;
-    margin: 0.5em 0;
+﻿#profile {
+    max-width: 90%;
+    margin: auto;
+}
+
+#profile #info .card {
+    margin: 0.3em;
+}
+
+#profile #info .user {
+    flex: 5;
+}
+
+#profile #info .friends {
+    flex: 3;
 }
 
 .game-point {

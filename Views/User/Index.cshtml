@@ -3,21 +3,17 @@
     ViewData["Title"] = $"User: {Model.UserName} | Gamescore";
 }
 
-@functions{
+<div id="profile">
 
-}
+    @if (Model.UserName == User.Identity.Name)
+    {
+        <p>
+            <b><a asp-area="Identity" asp-page="/Account/Manage/Index" >Account settings</a></b>
+        </p>
+    }
 
-
-@if (Model.UserName == User.Identity.Name)
-{
-    <p>
-        <b><a asp-area="Identity" asp-page="/Account/Manage/Index" >Account settings</a></b>
-    </p>
-}
-
-
-<div id="user">
-        <div class="card game">
+    <div id="info" class="d-flex flex-row">
+        <div class="card user">
 
             <div class="card-header">
 
@@ -25,7 +21,7 @@
 
             </div>
 
-            <div class="card-body game-desc d-flex flex-column">
+            <div class="card-body d-flex flex-column">
 
                 <div class="d-flex flex-row">                    
                     <p>
@@ -35,55 +31,81 @@
 
                 <div>
 
+                    Test
 
                 </div>
             </div>
         </div>
 
-        
-        <h3>Игры
-        @if (Model.UserName == User.Identity.Name)
-        {
-            <button id="addGame" onclick="toggleModal()">+</button>
-        }
-        </h3>
+        <div class="card friends">
 
-        <div class="profile-games">
-        @foreach (var game in Model.GamesFavorited)
-        {
-            <p>* @game.Name</p>
-        }
-        </div>    
-        
-        <div class="modal fade show" style="display:none; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
-            <div class="modal-dialog edit-dialog">
-                <div class="modal-content">
+            <div class="card-header">
 
-                    <div class="modal-header">
-                        <h3 class="modal-title">Add to collection</h3>
-                        <button type="button" class="close" onclick="toggleModal()">&times;</button>
+                <div><h3>Friends</h3></div>
+
+            </div>
+
+            <div class="card-body d-flex flex-column">
+
+                <div class="d-flex flex-row">                    
+                    <p>
+                        * Not implemented
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+
+    <hr />
+        
+    <h3>Collection
+    @if (Model.UserName == User.Identity.Name)
+    {
+        <button id="addGame" class="btn btn-secondary btn-sm" onclick="toggleModal()">+</button>
+    }
+    </h3>
+
+    <div class="profile-games">
+    @foreach (var game in Model.GamesFavorited)
+    {
+        <p>* @game.Name</p>
+    }
+    </div>    
+    
+</div>
+
+
+@* Add game modal *@
+
+<div class="modal fade show" style="display:none; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog edit-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="modal-title">Add to collection</h3>
+                <button type="button" class="btn-close btn-sm" onclick="toggleModal()"></button>
+            </div>
+
+            <form action="@Url.Action("AddGame")" method="post">
+                <div class="modal-body">
+                
+                    <div class="form-group">
+                        <label for="game-name">Name</label>
+                        <input type="text" name="Alias" class="form-control" id="game-name" placeholder="Name of the game" />
                     </div>
 
-                    <form action="@Url.Action("AddGame")" method="post">
-                        <div class="modal-body">
-                
-                            <div class="form-group">
-                                <label for="game-name">Name</label>
-                                <input type="text" name="Alias" class="form-control" id="game-name" placeholder="Name of the game" />
-                            </div>
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn" onclick="toggleModal()">Cancel</button>
-                            <button type="submit" id="submitEditedItem" class="btn btn-primary" onclick="toggleModal()">Submit</button>
-                        </div>
-
-                    </form>
                 </div>
-            </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="toggleModal()">Cancel</button>
+                    <button type="submit" id="submitEditedItem" class="btn btn-primary" onclick="toggleModal()">Submit</button>
+                </div>
+
+            </form>
         </div>
-    
+    </div>
 </div>
 
 @section Scripts
