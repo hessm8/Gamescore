@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 using Gamescore.Domain.Entities;
-using Gamescore.Web.Data;
+using Gamescore.DAL;
 
 namespace Gamescore.Web.Controllers
 {

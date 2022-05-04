@@ -1,4 +1,4 @@
-﻿namespace Gamescore.Web.Data.Repositories
+﻿namespace Gamescore.DAL.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {

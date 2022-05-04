@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Gamescore.Web.Data
+namespace Gamescore.DAL
 {
     public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {

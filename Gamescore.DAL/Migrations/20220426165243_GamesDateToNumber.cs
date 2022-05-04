@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Gamescore.Web.Data.Migrations
+namespace Gamescore.DAL.Migrations
 {
     public partial class GamesDateToNumber : Migration
     {

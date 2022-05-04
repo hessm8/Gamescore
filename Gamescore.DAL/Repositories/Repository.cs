@@ -1,7 +1,7 @@
 ﻿using Gamescore.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Gamescore.Web.Data.Repositories
+namespace Gamescore.DAL.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {

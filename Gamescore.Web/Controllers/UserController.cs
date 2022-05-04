@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 
 using Gamescore.Domain.Entities;
-using Gamescore.Web.Data;
+using Gamescore.DAL;
 
 namespace Gamescore.Web.Controllers
 {

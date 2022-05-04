@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Gamescore.DAL\Gamescore.DAL.csproj" />
     <ProjectReference Include="..\Gamescore.Domain\Gamescore.Domain.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-using Gamescore.Web.Data;
+using Gamescore.DAL;
 using Gamescore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

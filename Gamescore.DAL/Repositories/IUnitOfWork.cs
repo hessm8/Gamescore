@@ -1,6 +1,6 @@
 ﻿using Gamescore.Domain.Entities;
 
-namespace Gamescore.Web.Data.Repositories
+namespace Gamescore.DAL.Repositories
 {
     public interface IUnitOfWork
     {

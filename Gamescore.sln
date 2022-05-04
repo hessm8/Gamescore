@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamescore.Web", "Gamescore.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamescore.Domain", "Gamescore.Domain\Gamescore.Domain.csproj", "{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamescore.DAL", "Gamescore.DAL\Gamescore.DAL.csproj", "{CA997937-3797-4E02-999E-95FB7B23EA1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA997937-3797-4E02-999E-95FB7B23EA1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA997937-3797-4E02-999E-95FB7B23EA1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA997937-3797-4E02-999E-95FB7B23EA1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA997937-3797-4E02-999E-95FB7B23EA1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
