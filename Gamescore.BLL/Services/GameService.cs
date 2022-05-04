@@ -1,7 +1,7 @@
 ﻿using Gamescore.DAL.Repositories;
 using Gamescore.Domain.Entities;
 
-namespace Gamescore.Web.Logic
+namespace Gamescore.BLL.Services
 {
     public class GameService : BaseService
     {
