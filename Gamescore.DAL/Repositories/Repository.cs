@@ -1,9 +1,10 @@
 ﻿using Gamescore.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Gamescore.DAL.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly ApplicationDbContext context;
         protected DbSet<TEntity> Entities => context.Set<TEntity>();
@@ -37,6 +38,11 @@ namespace Gamescore.DAL.Repositories
         public void Delete(TEntity item)
         {
             Entities.Remove(item);
+        }
+
+        public async Task LoadCollection(TEntity item, string property)
+        {
+            await context.Entry(item).Collection(property).LoadAsync();
         }
     }
 }

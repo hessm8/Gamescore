@@ -6,6 +6,7 @@ namespace Gamescore.DAL.Repositories
     {
         public IRepository<Game> Games { get; }
         public IRepository<Match> Sessions { get; }
+        public IRepository<AppUser> Users { get; }
         public Task<int> Save();
     }
 }

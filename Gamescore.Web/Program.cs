@@ -28,6 +28,7 @@ builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireCo
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddTransient<IGameService, GameService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddControllersWithViews();
 
