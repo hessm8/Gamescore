@@ -1,4 +1,4 @@
-﻿using Gamescore.Web.Entities;
+﻿using Gamescore.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gamescore.Web.Data.Repositories

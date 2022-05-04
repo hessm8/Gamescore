@@ -1,4 +1,4 @@
-﻿@using Gamescore.Web.Entities
+﻿@using Gamescore.Domain.Entities
 @inject SignInManager<AppUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

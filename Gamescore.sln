@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamescore.Web", "Gamescore.Web\Gamescore.Web.csproj", "{31A4734E-033A-4997-9825-69B61E742425}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamescore.Domain", "Gamescore.Domain\Gamescore.Domain.csproj", "{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{31A4734E-033A-4997-9825-69B61E742425}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31A4734E-033A-4997-9825-69B61E742425}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31A4734E-033A-4997-9825-69B61E742425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{605E8DC6-D4C4-4AD0-A1E6-89554089FD9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

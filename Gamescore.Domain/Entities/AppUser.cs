@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace Gamescore.Web.Entities
+namespace Gamescore.Domain.Entities
 {
     public class AppUser : IdentityUser<Guid>
     {

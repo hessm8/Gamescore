@@ -1,5 +1,5 @@
 using Gamescore.Web.Data;
-using Gamescore.Web.Entities;
+using Gamescore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

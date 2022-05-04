@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-using Gamescore.Web.Entities;
+using Gamescore.Domain.Entities;
 using Gamescore.Web.Data;
 
 namespace Gamescore.Web.Controllers

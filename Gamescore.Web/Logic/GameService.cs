@@ -1,5 +1,5 @@
 ﻿using Gamescore.Web.Data.Repositories;
-using Gamescore.Web.Entities;
+using Gamescore.Domain.Entities;
 
 namespace Gamescore.Web.Logic
 {

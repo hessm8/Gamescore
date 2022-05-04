@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gamescore.Web.Entities
+namespace Gamescore.Domain.Entities
 {
     public class BaseEntity
     {

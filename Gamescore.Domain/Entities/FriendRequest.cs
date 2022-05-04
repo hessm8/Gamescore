@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Gamescore.Web.Entities
+namespace Gamescore.Domain.Entities
 {
     [Table("FriendRequests")]
     public class FriendRequest

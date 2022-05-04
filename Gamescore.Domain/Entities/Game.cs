@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Gamescore.Web.Entities
+namespace Gamescore.Domain.Entities
 {
     [Table("Games")]
     public class Game : BaseEntity
