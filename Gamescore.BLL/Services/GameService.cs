@@ -3,7 +3,7 @@ using Gamescore.Domain.Entities;
 
 namespace Gamescore.BLL.Services
 {
-    public class GameService : BaseService
+    public class GameService : BaseService, IGameService
     {
         public GameService(IUnitOfWork uow) : base(uow) { }
 
@@ -11,5 +11,17 @@ namespace Gamescore.BLL.Services
         {
             return await uow.Games.GetAll();
         }
+
+        public async Task AddGame(Game game)
+        {
+            await uow.Games.Create(game);
+            await uow.Save();
+        }
+    }
+
+    public interface IGameService
+    {
+        public Task<IEnumerable<Game>> GetAll();
+        public Task AddGame(Game game);
     }
 }

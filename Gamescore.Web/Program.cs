@@ -3,6 +3,8 @@ using Gamescore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Gamescore.DAL.Repositories;
+using Gamescore.BLL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,10 @@ builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireCo
 //    .AddRoleStore<RoleStore<AppRole, ApplicationDbContext, Guid>>();
 
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddTransient<IGameService, GameService>();
 
 builder.Services.AddControllersWithViews();
 

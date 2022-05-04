@@ -4,23 +4,24 @@ using System.Diagnostics;
 
 using Gamescore.Domain.Entities;
 using Gamescore.DAL;
+using Gamescore.BLL.Services;
 
 namespace Gamescore.Web.Controllers
 {
     public class GamesController : Controller
     {
         private readonly ILogger<GamesController> logger;
-        private ApplicationDbContext context; // Will be replaced with services
+        private readonly IGameService service;
 
-        public GamesController(ILogger<GamesController> logger, ApplicationDbContext context)
+        public GamesController(ILogger<GamesController> logger, IGameService service)
         {
             this.logger = logger;
-            this.context = context;
+            this.service = service;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {           
-            return View(context.Games.ToList());
+            return View(await service.GetAll());
         }
 
         [HttpGet]
@@ -34,10 +35,7 @@ namespace Gamescore.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Will replace EF context later
-                context.Games.Add(game);
-                await context.SaveChangesAsync();
-
+                await service.AddGame(game);
                 return RedirectToAction("Index");
             }
 
