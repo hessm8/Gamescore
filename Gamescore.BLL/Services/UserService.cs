@@ -2,6 +2,7 @@
 using Gamescore.DAL.Repositories;
 using Gamescore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Gamescore.BLL.Services
@@ -14,9 +15,9 @@ namespace Gamescore.BLL.Services
             this.userManager = userManager;
         }
 
-        public async Task<IEnumerable<Game>> GetAll()
+        public async Task<IEnumerable<AppUser>> GetAll()
         {
-            return await uow.Games.GetAll();
+            return await userManager.Users.ToListAsync();
         }
 
         public async Task AddGame(Game game)
@@ -57,7 +58,7 @@ namespace Gamescore.BLL.Services
 
     public interface IUserService
     {
-        public Task<IEnumerable<Game>> GetAll();
+        public Task<IEnumerable<AppUser>> GetAll();
         public Task<bool> AddGame(ClaimsPrincipal User, string alias);
         public Task<AppUser?> GetUser(ClaimsPrincipal User, string? name = null);
     }

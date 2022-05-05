@@ -33,6 +33,12 @@ namespace Gamescore.Web.Controllers
             return user != null ? View(user) : NotFound();
         }
 
+        [Route("users")]
+        public async Task<IActionResult> AllUsers()
+        {
+            return View(await service.GetAll());
+        }
+
         public async Task<IActionResult> AddGame(UserGameViewModel model)
         {
             if (ModelState.IsValid)
