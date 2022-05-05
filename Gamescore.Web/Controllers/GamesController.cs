@@ -25,6 +25,14 @@ namespace Gamescore.Web.Controllers
         }
 
         [HttpGet]
+        [Route("games/{name}")]
+        public async Task<IActionResult> GamePage(string name)
+        {
+            var user = await service.GetByName(name);
+            return user != null ? View(user) : NotFound();
+        }
+
+        [HttpGet]
         public IActionResult Add()
         {
             return View();

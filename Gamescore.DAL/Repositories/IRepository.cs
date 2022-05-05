@@ -1,9 +1,12 @@
-﻿namespace Gamescore.DAL.Repositories
+﻿using System.Linq.Expressions;
+
+namespace Gamescore.DAL.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        Task<IEnumerable<TEntity>> GetAll();
-        Task<TEntity?> Get(Guid id);
+        Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>>? filter = null);
+        Task<TEntity?> GetById(Guid id);
+        Task<TEntity?> GetFirst(Expression<Func<TEntity, bool>> expression);
         Task<TEntity> Create(TEntity item);
         void Update(TEntity item);
         void Delete(TEntity item);

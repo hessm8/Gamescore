@@ -9,19 +9,27 @@ namespace Gamescore.DAL.Repositories
         protected readonly ApplicationDbContext context;
         protected DbSet<TEntity> Entities => context.Set<TEntity>();
 
-        public Repository(ApplicationDbContext ApplicationDbContext)
+        public Repository(ApplicationDbContext context)
         {
-            context = ApplicationDbContext;
+            this.context = context;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>>? filter = null)
         {
-            return await Entities.ToListAsync();
+            IQueryable<TEntity> query = Entities;
+            if (filter != null) query = query.Where(filter);            
+
+            return await query.ToListAsync();
         }
 
-        public async Task<TEntity?> Get(Guid id)
+        public async Task<TEntity?> GetById(Guid id)
         {
             return await Entities.FindAsync(id);
+        }
+
+        public async Task<TEntity?> GetFirst(Expression<Func<TEntity, bool>> expression)
+        {
+            return await Entities.FirstOrDefaultAsync(expression);
         }
 
         public async Task<TEntity> Create(TEntity entity)
