@@ -13,6 +13,7 @@ namespace Gamescore.Domain.Entities
         public byte[]? Image { get; set; }
 
         public int? ReleaseDate { get; set; }
+        public string? Description { get; set; }
 
         public int AgeMin { get; set; }
         public int PlayersMin { get; set; }
