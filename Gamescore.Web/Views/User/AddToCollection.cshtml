@@ -1,0 +1,28 @@
+﻿<div class="modal fade show" style="display:none; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog edit-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="modal-title">Add to collection</h3>
+                <button type="button" class="btn-close btn-sm" onclick="toggleModal()"></button>
+            </div>
+
+            <form action="@Url.Action("AddToCollection")" method="post">
+                <div class="modal-body">
+                
+                    <div class="form-group">
+                        <label for="game-name">Name</label>
+                        <input type="text" name="Alias" class="form-control" id="game-name" placeholder="Name of the game" />
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="toggleModal()">Cancel</button>
+                    <button type="submit" id="submitEditedItem" class="btn btn-primary" onclick="toggleModal()">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

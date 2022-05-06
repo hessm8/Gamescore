@@ -39,7 +39,8 @@ namespace Gamescore.Web.Controllers
             return View(await service.GetAll());
         }
 
-        public async Task<IActionResult> AddGame(UserGameViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> AddToCollection(UserGameViewModel model)
         {
             if (ModelState.IsValid)
             {
