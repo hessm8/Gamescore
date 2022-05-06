@@ -39,6 +39,11 @@ namespace Gamescore.Web.Controllers
             return View(await service.GetAll());
         }
 
+        //public IActionResult AddToCollection()
+        //{
+        //    return PartialView("AddToCollection", null);
+        //}
+
         [HttpPost]
         public async Task<IActionResult> AddToCollection(UserGameViewModel model)
         {
