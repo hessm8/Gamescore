@@ -6,7 +6,25 @@ namespace Gamescore.Domain.Entities
 {
     public class AppUser : IdentityUser<Guid>
     {
-        // User collection / rating of current user
+        // Fields
+
+        [PersonalData]
+        public string? FullName { get; set; }
+        [PersonalData]
+        public string? Gender { get; set; }
+        [PersonalData]
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
+        public DateTime? LastLoginTime { get; set; }
+
+
+        [NotMapped]
+        public int StatisticsCollection => GamesFavorited.Count;
+        [NotMapped]
+        public int StatisticsRated => GamesRated.Count;
+
+        #region Relations
+
+        // User collection / ratings of current user
         public virtual ICollection<Game> GamesFavorited { get; set; } = new List<Game>();
         public virtual ICollection<Rating> GamesRated { get; set; } = new List<Rating>();
 
@@ -27,6 +45,8 @@ namespace Gamescore.Domain.Entities
         public virtual ICollection<Player> PlayersCreated { get; set; } = new List<Player>();
         // Players where UserPlayer is this user
         public virtual ICollection<Player> Players { get; set; } = new List<Player>();
+
+        #endregion
     }
 
     public class AppRole : IdentityRole<Guid> { }

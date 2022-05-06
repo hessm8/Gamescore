@@ -119,6 +119,12 @@ namespace Gamescore.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    // Update last login time
+                    var manager = _signInManager.UserManager;
+                    var user = await manager.FindByNameAsync(Input.UserName);
+                    user.LastLoginTime = DateTime.Now;
+                    await manager.UpdateAsync(user);
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

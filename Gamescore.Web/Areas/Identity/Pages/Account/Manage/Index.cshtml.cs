@@ -30,7 +30,7 @@ namespace Gamescore.Web.Areas.Identity.Pages.Account.Manage
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string Username { get; set; }
+        public string Username { get; set; }        
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -59,6 +59,13 @@ namespace Gamescore.Web.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Name")]
+            [MaxLength(100)]
+            public string FullName { get; set; }
+
+            [MaxLength(50)]
+            public string Gender { get; set; }
         }
 
         private async Task LoadAsync(AppUser user)
@@ -70,7 +77,9 @@ namespace Gamescore.Web.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FullName = user.FullName,
+                Gender = user.Gender
             };
         }
 
@@ -110,6 +119,12 @@ namespace Gamescore.Web.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+
+            // Update custom fields
+
+            if (Input.FullName != user.FullName) user.FullName = Input.FullName;
+            if (Input.Gender != user.Gender) user.Gender = Input.Gender;
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
