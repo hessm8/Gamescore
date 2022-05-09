@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamescore.Domain", "Gamesco
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamescore.DAL", "Gamescore.DAL\Gamescore.DAL.csproj", "{CA997937-3797-4E02-999E-95FB7B23EA1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamescore.BLL", "Gamescore.BLL\Gamescore.BLL.csproj", "{2A52A42A-DA49-4EBA-82D3-E55F70BA46CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamescore.BLL", "Gamescore.BLL\Gamescore.BLL.csproj", "{2A52A42A-DA49-4EBA-82D3-E55F70BA46CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

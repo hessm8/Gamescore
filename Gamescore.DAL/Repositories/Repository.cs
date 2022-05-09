@@ -7,19 +7,28 @@ namespace Gamescore.DAL.Repositories
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly ApplicationDbContext context;
-        protected DbSet<TEntity> Entities => context.Set<TEntity>();
+        protected DbSet<TEntity> Entities;
+        protected IQueryable<TEntity> Query;
 
         public Repository(ApplicationDbContext context)
         {
             this.context = context;
+            Entities = context.Set<TEntity>();
+            Query = Entities;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>>? filter = null)
+        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>>? filter = null, params string[] includes)
         {
-            IQueryable<TEntity> query = Entities;
-            if (filter != null) query = query.Where(filter);            
+            //IQueryable<TEntity> Query = Entities;
 
-            return await query.ToListAsync();
+            foreach (var include in includes)
+            {
+                Query = Query.Include(include);
+            }
+
+            if (filter != null) Query = Query.Where(filter); 
+
+            return await Query.ToListAsync();
         }
 
         public async Task<TEntity?> GetById(Guid id)
@@ -29,7 +38,7 @@ namespace Gamescore.DAL.Repositories
 
         public async Task<TEntity?> GetFirst(Expression<Func<TEntity, bool>> expression)
         {
-            return await Entities.FirstOrDefaultAsync(expression);
+            return await Query.FirstOrDefaultAsync(expression);
         }
 
         public async Task<TEntity> Create(TEntity entity)
@@ -52,5 +61,19 @@ namespace Gamescore.DAL.Repositories
         {
             await context.Entry(item).Collection(property).LoadAsync();
         }
+
+        public Repository<TEntity> Include(string property)
+        {
+            //Entities = (DbSet<TEntity>)Entities.Include(property);
+            Query = Query.Include(property);
+
+            return this;
+        }
+
+        //public Repository<TEntity> Include<TProperty>(string include)
+        //{
+        //    Query = Query.Include(include);
+        //    return this;
+        //}
     }
 }

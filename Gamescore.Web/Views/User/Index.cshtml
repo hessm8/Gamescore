@@ -1,11 +1,11 @@
-﻿@model AppUser
+﻿@model UserProfileViewModel
 @{
-    ViewData["Title"] = $"User: {Model.UserName} | Gamescore";
+    ViewData["Title"] = $"User: {Model.User.UserName} | Gamescore";
 }
 
 <div id="profile">
 
-    @if (Model.UserName == User.Identity.Name)
+    @if (Model.IsMe)
     {
         <p>
             <b><a asp-area="Identity" asp-page="/Account/Manage/Index" >Account settings</a></b>
@@ -17,7 +17,7 @@
 
             <div class="card-header">
 
-                <div><h3>@Model.UserName</h3></div>
+                <div><h3>@Model.User.UserName</h3></div>
 
             </div>
 
@@ -42,7 +42,27 @@
             <div class="card-header">
 
                 <div><h3>Friends</h3></div>
+                @if (Model.LoggedIn && !Model.IsMe)
+                {
 
+                    if (Model.Friendship == null)
+                    {
+                        <input type="button" class="btn btn-primary" value="Add as friend" onclick="location.href='@Url.Action("AddFriend", "user", new { username = Model.User.UserName })'" />
+                    }    
+                    else if (Model.Friendship.Value.status == FriendStatus.Pending && !Model.Friendship.Value.received)
+                    {
+                        <p>You requested</p>
+
+                    } else if (Model.Friendship.Value.status == FriendStatus.Pending && Model.Friendship.Value.received)
+                    {
+                        <input type="button" class="btn btn-primary" value="Accept" onclick="location.href='@Url.Action("AcceptFriend", "user", new { username = Model.User.UserName })'" />
+                        <input type="button" class="btn btn-danger" value="Decline" onclick="location.href='@Url.Action("AcceptFriend", "user", new { username = Model.User.UserName })'" />
+                    } 
+                }
+                else
+                {
+                    
+                }
             </div>
 
             <div class="card-body d-flex flex-column">
@@ -65,23 +85,23 @@
     <hr />
         
     <h3>Collection
-    @if (Model.UserName == User.Identity.Name)
+    @if (Model.IsMe)
     {
         <button id="addGame" class="btn btn-secondary btn-sm" onclick="toggleModal()">+</button>
     }
     </h3>
 
     <div class="profile-games">
-    @foreach (var game in Model.GamesFavorited)
-    {
-        <p>* @game.Name</p>
-    }
+        <p>RATED: @Model.User.GamesFavorited.Count</p>
+        @foreach (var game in Model.User.GamesFavorited)
+        {
+            <p>* @game.Name</p>
+        }
     </div>    
     
 </div>
 
-<partial name="AddToCollection" />
-@*@Html.Partial("AddToCollection")*@
+@Html.Partial("AddToCollection", new UserGameViewModel())
 
 @section Scripts
 {

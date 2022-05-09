@@ -22,15 +22,17 @@ namespace Gamescore.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await service.GetUser(User));
+            var user = await UserProfileViewModel.Create(service, User, null);
+            return View(user);
         }
 
         [HttpGet]
-        [Route("user/{name}")]
-        public async Task<IActionResult> Index(string name)
+        [Route("user/{username}")]
+        public async Task<IActionResult> Index(string username)
         {
-            var user = await service.GetUser(User, name);
-            return user != null ? View(user) : NotFound();
+            //var user = await service.GetUser(User, username);
+            var user = await UserProfileViewModel.Create(service, User, username);
+            return user != null ? View("Index", user) : NotFound();
         }
 
         [Route("users")]
@@ -44,6 +46,12 @@ namespace Gamescore.Web.Controllers
         //    return PartialView("AddToCollection", null);
         //}
 
+        public ActionResult AddToCollection()
+        {
+            var _objuserloginmodel = new UserGameViewModel();
+            return View("AddToCollection", _objuserloginmodel);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddToCollection(UserGameViewModel model)
         {
@@ -54,6 +62,17 @@ namespace Gamescore.Web.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [Route("user/{username}/friend")]
+        public async Task<IActionResult> AddFriend(string username)
+        {
+            if (ModelState.IsValid)
+            {
+                var added = await service.AddFriend(User, username);
+            }
+
+            return RedirectToAction("Index", "user", new { username });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

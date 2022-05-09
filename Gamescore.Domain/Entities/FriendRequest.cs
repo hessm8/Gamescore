@@ -19,8 +19,9 @@ namespace Gamescore.Domain.Entities
 
     public enum FriendStatus
     {
-        Pending,
-        Approved,
-        Rejected
+        None = -1,
+        Pending = 0,
+        Approved = 1,
+        Rejected = 2
     };
 }
