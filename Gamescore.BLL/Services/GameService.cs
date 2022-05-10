@@ -41,6 +41,14 @@ namespace Gamescore.BLL.Services
             game.RatedBy.Add(userRating);
             await uow.Save();
         }
+
+        public async Task<Rating> GetRating(Game game, ClaimsPrincipal claims)
+        {
+            var user = await uow.Users.GetFirst(u => u.UserName == claims.Identity.Name);
+
+            var rating = await uow.Ratings.GetFirst(r => r.UserId == user.Id && r.GameId == game.Id);
+            return rating;
+        }
     }
 
     public interface IGameService
@@ -49,5 +57,6 @@ namespace Gamescore.BLL.Services
         public Task AddGame(Game game);
         public Task<Game?> GetByName(string alias);
         public Task RateGame(ClaimsPrincipal user, Game game, int rating);
+        public Task<Rating> GetRating(Game game, ClaimsPrincipal claims);
     }
 }

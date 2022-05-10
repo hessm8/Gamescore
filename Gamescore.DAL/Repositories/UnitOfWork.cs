@@ -12,11 +12,13 @@ namespace Gamescore.DAL.Repositories
             Sessions = new Repository<Match>(context);
             Users = new Repository<AppUser>(context);
             FriendRequests = new Repository<FriendRequest>(context);
+            Ratings = new Repository<Rating>(context);
         }
         public IRepository<Game> Games { get; }
         public IRepository<Match> Sessions { get; }
         public IRepository<AppUser> Users { get; }
         public IRepository<FriendRequest> FriendRequests { get; }
+        public IRepository<Rating> Ratings { get; }
 
         public async Task<int> Save() => await context.SaveChangesAsync();
 

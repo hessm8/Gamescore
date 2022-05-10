@@ -29,7 +29,8 @@ namespace Gamescore.Web.Controllers
         public async Task<IActionResult> GamePage(string name)
         {
             var game = await service.GetByName(name);
-            return game != null ? View(game) : NotFound();
+            var model = await GameProfileViewModel.Create(service, game, User);
+            return game != null ? View(model) : NotFound();
         }
 
         [Route("game/{name}/rate")]

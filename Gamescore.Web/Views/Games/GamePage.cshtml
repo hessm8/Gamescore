@@ -1,17 +1,25 @@
 ﻿@using Microsoft.AspNetCore.Html
-@model Game
+@model GameProfileViewModel
 @{
-    ViewData["Title"] = $"{Model.Name} | Gamescore";
+    ViewData["Title"] = $"{Model.Game.Name} | Gamescore";
 
     Func<dynamic, object> RatingStar = @<img
         class="icon-small icon-star @item.pressed" 
         src="/icons/star.png" 
         star-index="@item.index" 
-        game-alias="@Model.Alias"
+        game-alias="@Model.Game.Alias"
         onclick="location.href='@Url.Action("RateGame", "games", new {
-            name = @Model.Alias, rating = @item.index + 1
+            name = @Model.Game.Alias, rating = @item.index + 1
         })'"
-    />;
+    />
+    ;
+
+    int GetRating()
+    {
+        if (Model.Rating == null) return 0;
+
+        return (int)Model.Rating.RatingGameplay;
+    }
 }
 
 @functions{
@@ -32,23 +40,23 @@
             <div class="card-header game-points d-flex flex-row justify-content-between">
 
                 <div>
-                    <div><h3>@Model.Name (@Model.ReleaseDate)</h3></div>
-                    <div><p style="color:gray;">@Model.NameLocalized</p></div>
+                    <div><h3>@Model.Game.Name (@Model.Game.ReleaseDate)</h3></div>
+                    <div><p style="color:gray;">@Model.Game.NameLocalized</p></div>
                 </div>
 
                 <div class="game-point d-flex flex-column">
 
                     <div class="game-icon flex-row">
                         <img class="icon-small" src="/icons/chess.png" title="Players" />
-                        <div>@Model.PlayersMin - @Model.PlayersMax</div>
+                        <div>@Model.Game.PlayersMin - @Model.Game.PlayersMax</div>
                     </div>
                     <div class="game-icon flex-row">
                         <img class="icon-small" src="/icons/user-restrict.png" title="Min. age" />
-                        <div>@Model.AgeMin+</div>
+                        <div>@Model.Game.AgeMin+</div>
                     </div>
                     <div class="game-icon flex-row">
                         <img class="icon-small" src="/icons/time.png" title="Game duration" />
-                        <div>@Model.DurationMin - @Model.DurationMax</div>
+                        <div>@Model.Game.DurationMin - @Model.Game.DurationMax</div>
                     </div>
 
                 </div>
@@ -58,7 +66,7 @@
                 <div class="d-flex flex-row">
                     <img class="game-image" src="https://s.tesera.ru/images/items/635932/200x200xpa/photo1.jpg" />
                     <p>
-                        @Model.Description
+                        @Model.Game.Description
                     </p>
                 </div>
                 <div>
@@ -68,7 +76,7 @@
                         {
                             @RatingStar(new { 
                                 index = i,
-                                pressed = i <= 5 ? "is-pressed" : ""
+                                pressed = i < GetRating() ? "is-pressed" : ""
                             });
                         }
                     </div>
