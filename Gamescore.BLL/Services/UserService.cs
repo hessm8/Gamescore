@@ -39,8 +39,15 @@ namespace Gamescore.BLL.Services
             user = await uow.Users
                 .Include("GamesFavorited")
                 .Include("GamesRated")
+
                 .Include("SentFriendRequests")
+                //.Include("SentFriendRequests.SentBy")
+                //.Include("SentFriendRequests.SentTo")
+
                 .Include("ReceievedFriendRequests")
+                //.Include("ReceievedFriendRequests.SentBy")
+                //.Include("ReceievedFriendRequests.SentTo")
+
                 .GetFirst(u => u.Id == user.Id);
 
             return user;
@@ -76,22 +83,44 @@ namespace Gamescore.BLL.Services
             return true;
         }
 
-        public async Task<bool> AddFriend(ClaimsPrincipal User, string name)
+        public async Task<bool> ManageFriendRequest(ClaimsPrincipal claims, string username, string requestAction)
         {
 
             // Note: this probably needs some cleanup. Haven't tested this again since implementing the UserProfileViewModel and other service things...
 
-            var myUser = await userManager.GetUserAsync(User);
-            var friendUser = await userManager.FindByNameAsync(name);
+            //var myUser = await userManager.GetUserAsync(claims);
+            //var friendUser = await userManager.FindByNameAsync(username);
+
+            var myUser = await GetUser(claims);
+            var friendUser = await GetUser(username);
 
             if (friendUser == null || myUser.UserName == friendUser.UserName) return false;
 
-            await uow.Users.LoadCollection(myUser, "SentFriendRequests");
+            return requestAction switch
+            {
+                "add" => await AddFriendRequest(myUser, friendUser),
+                "accept" => await AcceptFriendRequest(myUser, friendUser),
+                _ => false
+            };
+        }
+
+        private async Task<bool> AddFriendRequest(AppUser myUser, AppUser friendUser)
+        {
+            // REPLACED WITH INCLUDE --> await uow.Users.LoadCollection(myUser, "SentFriendRequests");
             //if (Fr) throw new Exception("friend request already sent");
 
             myUser.FriendWith(friendUser);
             await uow.Save();
 
+            return true;
+        }
+
+        private async Task<bool> AcceptFriendRequest(AppUser myUser, AppUser friendUser)
+        {
+
+            var friendRequest = myUser.ReceievedFriendRequests.FirstOrDefault(fr => fr.SentById == friendUser.Id);
+            friendRequest.Status = FriendStatus.Approved;
+            await uow.Save();
 
             return true;
         }
@@ -102,7 +131,7 @@ namespace Gamescore.BLL.Services
         public Task<IEnumerable<AppUser>> GetAll();
         public Task<bool> AddGame(ClaimsPrincipal User, string alias);
         //public Task<AppUser?> GetUser(ClaimsPrincipal User, string? name = null);
-        public Task<bool> AddFriend(ClaimsPrincipal User, string name);
+        public Task<bool> ManageFriendRequest(ClaimsPrincipal User, string name, string action);
         Task<IEnumerable<AppUser>> GetFriends(AppUser user);
         Task<AppUser> GetUser(string? username);
         Task<AppUser> GetUser(ClaimsPrincipal claims);

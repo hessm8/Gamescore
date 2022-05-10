@@ -65,11 +65,11 @@ namespace Gamescore.Web.Controllers
         }
 
         [Route("user/{username}/friend")]
-        public async Task<IActionResult> AddFriend(string username)
+        public async Task<IActionResult> ManageFriend(string username, string requestAction)
         {
             if (ModelState.IsValid)
             {
-                var added = await service.AddFriend(User, username);
+                var success = await service.ManageFriendRequest(User, username, requestAction);
             }
 
             return RedirectToAction("Index", "user", new { username });
