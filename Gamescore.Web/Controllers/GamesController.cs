@@ -28,8 +28,19 @@ namespace Gamescore.Web.Controllers
         [Route("game/{name}")]
         public async Task<IActionResult> GamePage(string name)
         {
-            var user = await service.GetByName(name);
-            return user != null ? View(user) : NotFound();
+            var game = await service.GetByName(name);
+            return game != null ? View(game) : NotFound();
+        }
+
+        [Route("game/{name}/rate")]
+        public async Task<IActionResult> RateGame(string name, int rating)
+        {
+            var game = await service.GetByName(name);
+            if (game == null) return NotFound();
+
+            await service.RateGame(User, game, rating);
+
+            return RedirectToAction("GamePage", "games", new { name });
         }
 
         [HttpGet]
