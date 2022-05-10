@@ -66,7 +66,7 @@
                     } else if (Model.Friendship.Value.status == FriendStatus.Pending && Model.Friendship.Value.received)
                     {
                         <input type="button" class="btn btn-primary" value="Accept" onclick="location.href='@Url.Action("ManageFriend", "user", new { username = Model.User.UserName, requestAction = "accept" })'" />
-                        <input type="button" class="btn btn-danger" value="Decline" onclick="location.href='@Url.Action("ManageFriend", "user", new { username = Model.User.UserName })'" />
+                        <input type="button" class="btn btn-danger" value="Decline" onclick="location.href='@Url.Action("ManageFriend", "user", new { username = Model.User.UserName, requestAction = "decline" })'" />
                     } 
                 }
                 else
@@ -79,12 +79,12 @@
 @*                <p>
                     REQUESTS:                        
                 </p>*@
-                <p>
-                    @foreach (var request in @Model.User.Friends)
+                    @foreach (var friend in @Model.Friends)
                     {
-                       <a href="~/user/@request.FriendOf(@Model.User)">@request.FriendOf(@Model.User)</a> 
+                        <p>
+                        <a href="~/user/@friend.UserName">@friend.UserName</a> 
+                        </p>
                     }                    
-                </p>
             </div>
         </div>
         

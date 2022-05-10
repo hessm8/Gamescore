@@ -24,7 +24,7 @@ namespace Gamescore.Web.Models
 
             model.Friendship = service.GetFriendStatus(model.Me, model.User);
 
-            //model.Friends = await service.GetFriends(model.User);
+            model.Friends = await service.GetFriends(model.User);
 
             return model;
         }

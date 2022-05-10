@@ -16,9 +16,9 @@ namespace Gamescore.Domain.Entities
         [NotMapped]
         public bool AreFriends => Status == FriendStatus.Approved;
 
-        public AppUser FriendOf(AppUser user)
+        public Guid FriendOf(AppUser user)
         {
-            return SentBy.Id != user.Id ? SentBy : SentTo;
+            return SentById != user.Id ? SentById : SentToId;
         }
     }
 
