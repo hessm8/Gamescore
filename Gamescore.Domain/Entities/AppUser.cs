@@ -8,10 +8,12 @@ namespace Gamescore.Domain.Entities
     {
         // Fields
 
-        [PersonalData]
+        [PersonalData, DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "?")]
         public string? FullName { get; set; }
-        [PersonalData]
+
+        [PersonalData, DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "?")]
         public string? Gender { get; set; }
+
         [PersonalData]
         public DateTime RegisterDate { get; set; } = DateTime.Now;
         public DateTime? LastLoginTime { get; set; }

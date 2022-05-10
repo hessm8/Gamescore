@@ -38,6 +38,7 @@ namespace Gamescore.BLL.Services
 
             user = await uow.Users
                 .Include("GamesFavorited")
+                .Include("GamesRated")
                 .Include("SentFriendRequests")
                 .Include("ReceievedFriendRequests")
                 .GetFirst(u => u.Id == user.Id);

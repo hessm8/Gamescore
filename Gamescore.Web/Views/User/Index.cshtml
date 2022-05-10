@@ -1,6 +1,22 @@
-﻿@model UserProfileViewModel
+﻿@using Microsoft.AspNetCore.Html
+@model UserProfileViewModel
 @{
     ViewData["Title"] = $"User: {Model.User.UserName} | Gamescore";
+}
+
+@functions {
+    public static string LastLoginDisplay(DateTime? date)
+    {
+        if (date == null) return "?";
+        var diff = DateTime.Now.Subtract(date.Value);
+
+        if (diff.Hours < 1) return "less than a hour ago";
+
+        string output = $"{diff.Hours} hours ago";
+        if (diff.Days > 0) output.Insert(0, $"{diff.Days} days, ");
+
+        return output;
+    }
 }
 
 <div id="profile">
@@ -23,16 +39,10 @@
 
             <div class="card-body d-flex flex-column">
 
-                <div class="d-flex flex-row">                    
-                    <p>
-                        Всем привет
-                    </p>
-                </div>
-
-                <div>
-
-                    Test
-
+                <div class="d-flex flex-column">                    
+                    <p>Name: @Html.DisplayFor(m => m.User.FullName)</p>
+                    <p>Gender: @Html.DisplayFor(m => m.User.Gender)</p>
+                    <p>Last login: @LastLoginDisplay(Model.User.LastLoginTime)</p>
                 </div>
             </div>
         </div>
@@ -66,17 +76,12 @@
             </div>
 
             <div class="card-body d-flex flex-column">
-
-                <div class="d-flex flex-table">    
-                    <p>
-                        REQUESTS:
-                        
-                    </p>
-                    <p>
-                        Your friends
-                    </p>
-                </div>
-
+@*                <p>
+                    REQUESTS:                        
+                </p>*@
+                <p>
+                    <a href="~/user/@Model.Me.UserName">@Model.Me.UserName</a>
+                </p>
             </div>
         </div>
         
@@ -92,7 +97,8 @@
     </h3>
 
     <div class="profile-games">
-        <p>RATED: @Model.User.GamesFavorited.Count</p>
+        <p>Games in collection: @Model.User.GamesFavorited.Count</p>
+        <p>Games rated: @Model.User.GamesRated.Count</p>
         @foreach (var game in Model.User.GamesFavorited)
         {
             <p>* @game.Name</p>
