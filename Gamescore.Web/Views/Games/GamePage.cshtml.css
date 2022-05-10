@@ -34,7 +34,11 @@
     transition: 0.4s ease-out;
 }
 
-.icon-star.is-active {
-    filter: sepia(100%) brightness(300%) saturate(1000%);
+.icon-star.is-active, .icon-star.is-pressed {
+    filter: sepia(100%) brightness(300%) saturate(800%);
     transition: 0.2s;
+}
+
+.rating:hover .icon-star.is-pressed:not(.is-active) {
+    filter: none;
 }

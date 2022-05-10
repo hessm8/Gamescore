@@ -1,6 +1,17 @@
-﻿@model Game
+﻿@using Microsoft.AspNetCore.Html
+@model Game
 @{
     ViewData["Title"] = $"{Model.Name} | Gamescore";
+
+    Func<dynamic, object> RatingStar = @<img
+        class="icon-small icon-star @item.pressed" 
+        src="/icons/star.png" 
+        star-index="@item.index" 
+        game-alias="@Model.Alias"
+        onclick="location.href='@Url.Action("RateGame", "games", new {
+            name = @Model.Alias, rating = @item.index + 1
+        })'"
+    />;
 }
 
 @functions{
@@ -11,6 +22,8 @@
     //}
 
 }
+
+
 
 <div id="games">
 
@@ -49,13 +62,17 @@
                     </p>
                 </div>
                 <div>
-                    @*Rating*@
+
                     <div class="rating">
                         @for (int i = 0; i < 10; i++)
                         {
-                            <img class="icon-small icon-star" src="/icons/star.png" star-index="@i" game-alias="@Model.Alias" onclick="location.href='@Url.Action("RateGame", "games", new { name = @Model.Alias, rating = @i+1 })'"/>
+                            @RatingStar(new { 
+                                index = i,
+                                pressed = i <= 5 ? "is-pressed" : ""
+                            });
                         }
                     </div>
+
                 </div>
             </div>
         </div>
