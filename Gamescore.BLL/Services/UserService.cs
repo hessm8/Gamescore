@@ -61,6 +61,8 @@ namespace Gamescore.BLL.Services
 
         public (FriendStatus status, bool received)? GetFriendStatus(AppUser me, AppUser friend)
         {
+            if (me == null) return null;
+
             var sent = me.SentFriendRequests.FirstOrDefault(fr => fr.SentToId == friend.Id);
             var received = me.ReceievedFriendRequests.FirstOrDefault(fr => fr.SentById == friend.Id);
 

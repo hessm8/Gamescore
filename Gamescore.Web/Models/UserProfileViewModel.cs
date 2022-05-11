@@ -19,7 +19,7 @@ namespace Gamescore.Web.Models
             
             if (model.User == null) return null;
 
-            model.LoggedIn = claims.Identity != null;
+            model.LoggedIn = claims.Identity.IsAuthenticated;
             model.IsMe = model.LoggedIn ? model.User.UserName == claims.Identity.Name : false;
 
             model.Friendship = service.GetFriendStatus(model.Me, model.User);
