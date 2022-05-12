@@ -25,24 +25,33 @@ namespace Gamescore.BLL.Services
             await uow.Save();
         }
 
-        public async Task<bool> RateGame(ClaimsPrincipal claimsUser, Game game, int rating)
+        public async Task<bool> RateGame(ClaimsPrincipal claimsUser, Game game, int ratingPoints)
         {
             if (!claimsUser.Identity.IsAuthenticated) return false;
 
             var user = await uow.Users.GetFirst(u => u.UserName == claimsUser.Identity.Name);
 
-            var userRating = new Rating()
+            var userRating = await uow.Ratings.GetFirst(r => r.UserId == user.Id && r.GameId == game.Id);
+
+            if (userRating != null)
             {
-                GameId = game.Id,
-                UserId = user.Id,
-                RatingGameplay = rating,
-                RatingImplementation = rating,
-                RatingOriginality = rating
-            };
+                userRating.RatingGameplay = ratingPoints;
+                userRating.RatingImplementation = ratingPoints;
+                userRating.RatingOriginality = ratingPoints;
+            } else
+            {
+                userRating = new Rating()
+                {
+                    GameId = game.Id,
+                    UserId = user.Id,
+                    RatingGameplay = ratingPoints,
+                    RatingImplementation = ratingPoints,
+                    RatingOriginality = ratingPoints
+                };
+                game.RatedBy.Add(userRating);
+            }          
 
-            game.RatedBy.Add(userRating);
             await uow.Save();
-
             return true;
         }
 
