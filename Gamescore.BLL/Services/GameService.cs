@@ -71,6 +71,20 @@ namespace Gamescore.BLL.Services
             var rating = await uow.Ratings.GetFirst(r => r.UserId == user.Id && r.GameId == game.Id);
             return rating;
         }
+
+        public async Task UploadGameImage(Game game, string basePath)
+        {           
+            string directory = $"{basePath}\\data\\games\\{game.Alias}";           
+            Directory.CreateDirectory(directory);
+
+            string extension = Path.GetExtension(game.ImageFile.FileName);
+            string filePath = $"{directory}\\image{extension}";
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await game.ImageFile.CopyToAsync(fileStream);
+            }
+        }
     }
 
     public interface IGameService
@@ -80,5 +94,6 @@ namespace Gamescore.BLL.Services
         public Task<Game?> GetByName(string alias);
         public Task<bool> RateGame(ClaimsPrincipal user, Game game, int rating);
         public Task<Rating?> GetRating(Game game, ClaimsPrincipal claims);
+        public Task UploadGameImage(Game game, string basePath);
     }
 }

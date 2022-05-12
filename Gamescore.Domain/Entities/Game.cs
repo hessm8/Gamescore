@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gamescore.Domain.Entities
@@ -9,8 +11,7 @@ namespace Gamescore.Domain.Entities
         [Required]
         public string Alias { get; set; } = null!;
         public string Name { get; set; } = null!;
-        public string? NameLocalized { get; set; }
-        public byte[]? Image { get; set; }
+        public string? NameLocalized { get; set; }        
 
         public int? ReleaseDate { get; set; }
         public string? Description { get; set; }
@@ -24,6 +25,10 @@ namespace Gamescore.Domain.Entities
         // User collection / rating with current game
         public virtual ICollection<AppUser> FavoritedBy { get; set; } = new List<AppUser>();
         public virtual ICollection<Rating> RatedBy { get; set; } = new List<Rating>();
+
+        [NotMapped]
+        [DisplayName("Upload File")]
+        public IFormFile ImageFile { get; set; }
 
     }
 }

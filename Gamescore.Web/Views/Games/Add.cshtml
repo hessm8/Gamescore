@@ -4,7 +4,7 @@
 }
 
 <div>
-    <form method="post">
+    <form enctype="multipart/form-data" method="post">
 
         <div class="card" style="width:40%">
 
@@ -37,8 +37,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="game-image">Image (broken?)</label>
-                    <input type="file" name="Image" accept="image/png, image/jpeg" class="form-control" id="game-image" value="@Model?.Image" />
+                    <label for="game-image">Image</label>
+                    <input asp-for="ImageFile" accept="image/png" class="form-control" />
                 </div>
 
                 <div class="form-group">

@@ -64,7 +64,8 @@
 
             <div class="card-body game-desc d-flex flex-column">
                 <div class="d-flex flex-row">
-                    <img class="game-image" src="https://s.tesera.ru/images/items/635932/200x200xpa/photo1.jpg" />
+                    <img class="game-image" src="@($"/data/games/{Model.Game.Alias}/image.png")" />
+
                     <p>
                         @Model.Game.Description
                     </p>

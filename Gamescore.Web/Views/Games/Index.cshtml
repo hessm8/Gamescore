@@ -50,19 +50,19 @@
 
             <div class="card-body game-desc d-flex flex-column">
                 <div class="d-flex flex-row">
-                    <img class="game-image" src="https://s.tesera.ru/images/items/635932/200x200xpa/photo1.jpg" />
+                    <img class="game-image" src="@($"/data/games/{game.Alias}/image.png")" />
                     <p>
                         @game.Description
                     </p>
                 </div>
                 <div>
                     @*Rating*@
-                    <div class="rating">
+                    @*<div class="rating">
                         @for (int i = 0; i < 10; i++)
                         {
                             <img class="icon-small icon-star" src="/icons/star.png" star-index="@i" game-alias="@game.Alias" />
                         }
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>

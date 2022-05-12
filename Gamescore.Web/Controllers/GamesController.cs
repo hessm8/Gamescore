@@ -1,6 +1,7 @@
 ﻿using Gamescore.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Web;
 
 using Gamescore.Domain.Entities;
 using Gamescore.DAL;
@@ -12,11 +13,13 @@ namespace Gamescore.Web.Controllers
     {
         private readonly ILogger<GamesController> logger;
         private readonly IGameService service;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public GamesController(ILogger<GamesController> logger, IGameService service)
+        public GamesController(ILogger<GamesController> logger, IGameService service, IWebHostEnvironment webHostEnvironment)
         {
             this.logger = logger;
             this.service = service;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -55,7 +58,7 @@ namespace Gamescore.Web.Controllers
         public async Task<IActionResult> Add(Game game)
         {
             if (ModelState.IsValid)
-            {
+            {               
                 var wasAdded = await service.AddGame(game);
                 if (!wasAdded)
                 {
@@ -63,6 +66,7 @@ namespace Gamescore.Web.Controllers
                     return View(game);
                 }
 
+                await service.UploadGameImage(game, webHostEnvironment.WebRootPath);
                 return RedirectToAction("Index");
             }
 
