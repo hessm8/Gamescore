@@ -73,13 +73,14 @@ namespace Gamescore.BLL.Services
 
         public async Task<bool> AddGame(ClaimsPrincipal User, string alias)
         {
-            // filtering not in query
-            var game = uow.Games.GetAll().Result.Where(x => x.Alias == alias).FirstOrDefault();
 
+            var game = await uow.Games.GetFirst(x => x.Alias == alias);
             if (game == null) return false;
 
-            var user = await userManager.GetUserAsync(User);
-            user.GamesFavorited.Add(game);
+            var user = await GetUser(User);
+            if (!user.GamesFavorited.Contains(game)) user.GamesFavorited.Add(game); 
+            else user.GamesFavorited.Remove(game);
+
             await uow.Save();
 
             return true;
