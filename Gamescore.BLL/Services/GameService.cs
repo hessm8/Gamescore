@@ -25,8 +25,10 @@ namespace Gamescore.BLL.Services
             await uow.Save();
         }
 
-        public async Task RateGame(ClaimsPrincipal claimsUser, Game game, int rating)
+        public async Task<bool> RateGame(ClaimsPrincipal claimsUser, Game game, int rating)
         {
+            if (!claimsUser.Identity.IsAuthenticated) return false;
+
             var user = await uow.Users.GetFirst(u => u.UserName == claimsUser.Identity.Name);
 
             var userRating = new Rating()
@@ -40,10 +42,14 @@ namespace Gamescore.BLL.Services
 
             game.RatedBy.Add(userRating);
             await uow.Save();
+
+            return true;
         }
 
-        public async Task<Rating> GetRating(Game game, ClaimsPrincipal claims)
+        public async Task<Rating?> GetRating(Game game, ClaimsPrincipal claims)
         {
+            if (!claims.Identity.IsAuthenticated) return null;
+
             var user = await uow.Users.GetFirst(u => u.UserName == claims.Identity.Name);
 
             var rating = await uow.Ratings.GetFirst(r => r.UserId == user.Id && r.GameId == game.Id);
@@ -56,7 +62,7 @@ namespace Gamescore.BLL.Services
         public Task<IEnumerable<Game>> GetAll();
         public Task AddGame(Game game);
         public Task<Game?> GetByName(string alias);
-        public Task RateGame(ClaimsPrincipal user, Game game, int rating);
-        public Task<Rating> GetRating(Game game, ClaimsPrincipal claims);
+        public Task<bool> RateGame(ClaimsPrincipal user, Game game, int rating);
+        public Task<Rating?> GetRating(Game game, ClaimsPrincipal claims);
     }
 }

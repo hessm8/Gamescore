@@ -26,7 +26,7 @@ namespace Gamescore.Web.Controllers
 
         [HttpGet]
         [Route("game/{name}")]
-        public async Task<IActionResult> GamePage(string name)
+        public async Task<IActionResult> GameProfile(string name)
         {
             var game = await service.GetByName(name);
             var model = await GameProfileViewModel.Create(service, game, User);
@@ -39,9 +39,10 @@ namespace Gamescore.Web.Controllers
             var game = await service.GetByName(name);
             if (game == null) return NotFound();
 
-            await service.RateGame(User, game, rating);
+            var authorized = await service.RateGame(User, game, rating);
+            if (!authorized) return RedirectToAction("Login", "Account", new { area = "Identity" });
 
-            return RedirectToAction("GamePage", "games", new { name });
+            return RedirectToAction("GameProfile", "games", new { name });
         }
 
         [HttpGet]
