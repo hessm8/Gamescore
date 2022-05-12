@@ -19,10 +19,17 @@ namespace Gamescore.BLL.Services
             return game;
         }
 
-        public async Task AddGame(Game game)
+        public async Task<bool> AddGame(Game game)
         {
+            var foundGame = await uow.Games.GetFirst(foundGame => 
+                foundGame.Alias == game.Alias || foundGame.Name == game.Name);
+
+            if (foundGame != null) return false;
+            
             await uow.Games.Create(game);
             await uow.Save();
+
+            return true;
         }
 
         public async Task<bool> RateGame(ClaimsPrincipal claimsUser, Game game, int ratingPoints)
@@ -69,7 +76,7 @@ namespace Gamescore.BLL.Services
     public interface IGameService
     {
         public Task<IEnumerable<Game>> GetAll();
-        public Task AddGame(Game game);
+        public Task<bool> AddGame(Game game);
         public Task<Game?> GetByName(string alias);
         public Task<bool> RateGame(ClaimsPrincipal user, Game game, int rating);
         public Task<Rating?> GetRating(Game game, ClaimsPrincipal claims);

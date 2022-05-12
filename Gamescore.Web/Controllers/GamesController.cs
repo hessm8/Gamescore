@@ -56,7 +56,13 @@ namespace Gamescore.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await service.AddGame(game);
+                var wasAdded = await service.AddGame(game);
+                if (!wasAdded)
+                {
+                    ModelState.AddModelError("Alias", "The game under this alias or name already exists");
+                    return View(game);
+                }
+
                 return RedirectToAction("Index");
             }
 
