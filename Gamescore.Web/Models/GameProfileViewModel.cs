@@ -14,10 +14,14 @@ namespace Gamescore.Web.Models
             model.Game = game;
             model.Rating = await service.GetRating(game, user);
 
+            if (user != null) model.InCollection = user.GamesFavorited.Contains(game);
+
             return model;
         }
 
         public Game Game { get; set; } = null!;
         public Rating? Rating { get; set; }
+        
+        public bool InCollection { get; set; }
     }
 }

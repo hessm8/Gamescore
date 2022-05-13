@@ -9,7 +9,7 @@
         star-index="@item.index" 
         game-alias="@Model.Game.Alias"
         onclick="location.href='@Url.Action("RateGame", "games", new {
-            name = @Model.Game.Alias, rating = @item.index + 1
+            alias = @Model.Game.Alias, rating = @item.index + 1
         })'"
     />
     ;
@@ -59,6 +59,14 @@
                         @Model.Game.Description
                     </p>
                 </div>
+
+                <div>
+                    <input type="button" class="btn btn-primary" value="@(!Model.InCollection ? "Favorite" : "Unfavorite")" 
+                        onclick="location.href='@Url.Action("AddToCollection", "games",
+                        new { alias = Model.Game.Alias })'" 
+                    />
+                </div>
+
                 <div>
 
                     <div class="rating">

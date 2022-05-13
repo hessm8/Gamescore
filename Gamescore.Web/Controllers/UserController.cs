@@ -57,8 +57,8 @@ namespace Gamescore.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var added = await service.AddGame(User, model.Alias);
-                //return RedirectToAction("Index");
+                var user = await service.GetUser(User);
+                if (user != null) await service.AddToCollection(user, model.Alias);
             }
 
             return RedirectToAction("Index");

@@ -57,7 +57,10 @@
 
                     if (Model.Friendship == null)
                     {
-                        <input type="button" class="btn btn-primary" value="Add as friend" onclick="location.href='@Url.Action("ManageFriend", "user", new { username = Model.User.UserName, requestAction = "add" })'" />
+                        <input type="button" class="btn btn-primary" value="Add as friend" 
+                            onclick="location.href='@Url.Action("ManageFriend", "user", 
+                            new { username = Model.User.UserName, requestAction = "add" })'" 
+                        />
                     }    
                     else if (Model.Friendship.Value.status == FriendStatus.Pending && !Model.Friendship.Value.received)
                     {
@@ -65,8 +68,14 @@
 
                     } else if (Model.Friendship.Value.status == FriendStatus.Pending && Model.Friendship.Value.received)
                     {
-                        <input type="button" class="btn btn-primary" value="Accept" onclick="location.href='@Url.Action("ManageFriend", "user", new { username = Model.User.UserName, requestAction = "accept" })'" />
-                        <input type="button" class="btn btn-danger" value="Decline" onclick="location.href='@Url.Action("ManageFriend", "user", new { username = Model.User.UserName, requestAction = "decline" })'" />
+                        <input type="button" class="btn btn-primary" value="Accept" 
+                            onclick="location.href='@Url.Action("ManageFriend", "user",
+                            new { username = Model.User.UserName, requestAction = "accept" })'" 
+                        />
+                        <input type="button" class="btn btn-danger" value="Decline" 
+                            onclick="location.href='@Url.Action("ManageFriend", "user", 
+                            new { username = Model.User.UserName, requestAction = "decline" })'" 
+                        />
                     } 
                 }
                 else

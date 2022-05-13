@@ -15,6 +15,8 @@ namespace Gamescore.BLL.Services
             this.userManager = userManager;
         }
 
+        #region Receive
+
         public async Task<IEnumerable<AppUser>> GetAll()
         {
             return await userManager.Users.ToListAsync();
@@ -48,6 +50,8 @@ namespace Gamescore.BLL.Services
             return user;
         }
 
+        #endregion
+
         public async Task<IEnumerable<AppUser>> GetFriends(AppUser user)
         {
             var friends = new List<AppUser>();
@@ -55,7 +59,7 @@ namespace Gamescore.BLL.Services
             {
                 Guid friendId = request.FriendOf(user);
                 var friendUser = await uow.Users.GetFirst(u => u.Id == friendId);
-                friends.Add(friendUser);
+                friends.Add(friendUser!);
             }
 
             return friends;
@@ -73,13 +77,11 @@ namespace Gamescore.BLL.Services
             else return null;
         }
 
-        public async Task<bool> AddGame(ClaimsPrincipal User, string alias)
+        public async Task<bool> AddToCollection(AppUser user, string alias)
         {
-
             var game = await uow.Games.GetFirst(x => x.Alias == alias);
             if (game == null) return false;
 
-            var user = await GetUser(User);
             if (!user.GamesFavorited.Contains(game)) user.GamesFavorited.Add(game); 
             else user.GamesFavorited.Remove(game);
 
@@ -140,12 +142,11 @@ namespace Gamescore.BLL.Services
     public interface IUserService
     {
         public Task<IEnumerable<AppUser>> GetAll();
-        public Task<bool> AddGame(ClaimsPrincipal User, string alias);
-        //public Task<AppUser?> GetUser(ClaimsPrincipal User, string? name = null);
+        public Task<bool> AddToCollection(AppUser user, string alias);
         public Task<bool> ManageFriendRequest(ClaimsPrincipal User, string name, string action);
         Task<IEnumerable<AppUser>> GetFriends(AppUser user);
-        Task<AppUser> GetUser(string? username);
-        Task<AppUser> GetUser(ClaimsPrincipal claims);
+        Task<AppUser?> GetUser(string username);
+        Task<AppUser?> GetUser(ClaimsPrincipal claims);
         (FriendStatus status, bool received)? GetFriendStatus(AppUser me, AppUser user);
     }
 }
