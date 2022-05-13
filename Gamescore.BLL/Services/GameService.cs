@@ -32,13 +32,9 @@ namespace Gamescore.BLL.Services
             return true;
         }
 
-        public async Task<bool> RateGame(ClaimsPrincipal claimsUser, Game game, int ratingPoints)
+        public async Task<bool> RateGame(Game game, AppUser user, int ratingPoints)
         {
-            if (!claimsUser.Identity.IsAuthenticated) return false;
-
-            var user = await uow.Users.GetFirst(u => u.UserName == claimsUser.Identity.Name);
-
-            var userRating = await uow.Ratings.GetFirst(r => r.UserId == user.Id && r.GameId == game.Id);
+            var userRating = await GetRating(game, user);
 
             if (userRating != null)
             {
@@ -62,14 +58,12 @@ namespace Gamescore.BLL.Services
             return true;
         }
 
-        public async Task<Rating?> GetRating(Game game, ClaimsPrincipal claims)
+        public async Task<Rating?> GetRating(Game game, AppUser user)
         {
-            if (!claims.Identity.IsAuthenticated) return null;
+            if (user == null) return null;
 
-            var user = await uow.Users.GetFirst(u => u.UserName == claims.Identity.Name);
-
-            var rating = await uow.Ratings.GetFirst(r => r.UserId == user.Id && r.GameId == game.Id);
-            return rating;
+            var userRating = await uow.Ratings.GetFirst(r => r.UserId == user.Id && r.GameId == game.Id);
+            return userRating;
         }
 
         public async Task UploadGameImage(Game game, string basePath)
@@ -92,8 +86,8 @@ namespace Gamescore.BLL.Services
         public Task<IEnumerable<Game>> GetAll();
         public Task<bool> AddGame(Game game);
         public Task<Game?> GetByName(string alias);
-        public Task<bool> RateGame(ClaimsPrincipal user, Game game, int rating);
-        public Task<Rating?> GetRating(Game game, ClaimsPrincipal claims);
+        public Task<bool> RateGame(Game game, AppUser user, int rating);
+        public Task<Rating?> GetRating(Game game, AppUser user);
         public Task UploadGameImage(Game game, string basePath);
     }
 }

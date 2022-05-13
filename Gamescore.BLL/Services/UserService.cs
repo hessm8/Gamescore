@@ -20,9 +20,11 @@ namespace Gamescore.BLL.Services
             return await userManager.Users.ToListAsync();
         }
 
-        public async Task<AppUser?> GetUser(ClaimsPrincipal User)
+        public async Task<AppUser?> GetUser(ClaimsPrincipal claims)
         {
-            var user = await userManager.GetUserAsync(User);
+            if (!claims.Identity.IsAuthenticated) return null;
+
+            var user = await userManager.GetUserAsync(claims);
             return await GetUserWithData(user);
         }
 

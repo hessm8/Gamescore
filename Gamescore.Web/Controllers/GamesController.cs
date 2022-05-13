@@ -12,38 +12,48 @@ namespace Gamescore.Web.Controllers
     public class GamesController : Controller
     {
         private readonly ILogger<GamesController> logger;
-        private readonly IGameService service;
+        private readonly IGameService gameService;
+        private readonly IUserService userService;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public GamesController(ILogger<GamesController> logger, IGameService service, IWebHostEnvironment webHostEnvironment)
+        public GamesController(ILogger<GamesController> logger, 
+            IGameService gameService, IUserService userService,
+            IWebHostEnvironment webHostEnvironment)
         {
             this.logger = logger;
-            this.service = service;
+            this.gameService = gameService;
+            this.userService = userService;
             this.webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
         {           
-            return View(await service.GetAll());
+            return View(await gameService.GetAll());
         }
 
         [HttpGet]
         [Route("game/{name}")]
         public async Task<IActionResult> GameProfile(string name)
         {
-            var game = await service.GetByName(name);
-            var model = await GameProfileViewModel.Create(service, game, User);
-            return game != null ? View(model) : NotFound();
+            var game = await gameService.GetByName(name);
+            if (game == null) return NotFound();
+
+            var user = await userService.GetUser(User);
+
+            var model = await GameProfileViewModel.Create(gameService, game, user);
+            return View(model);
         }
 
         [Route("game/{name}/rate")]
         public async Task<IActionResult> RateGame(string name, int rating)
         {
-            var game = await service.GetByName(name);
+            var game = await gameService.GetByName(name);
             if (game == null) return NotFound();
 
-            var authorized = await service.RateGame(User, game, rating);
-            if (!authorized) return RedirectToAction("Login", "Account", new { area = "Identity" });
+            var user = await userService.GetUser(User);
+            if (user == null) return RedirectToAction("Login", "Account", new { area = "Identity" });
+
+            await gameService.RateGame(game, user, rating);
 
             return RedirectToAction("GameProfile", "games", new { name });
         }
@@ -59,19 +69,24 @@ namespace Gamescore.Web.Controllers
         {
             if (ModelState.IsValid)
             {               
-                var wasAdded = await service.AddGame(game);
+                var wasAdded = await gameService.AddGame(game);
                 if (!wasAdded)
                 {
                     ModelState.AddModelError("Alias", "The game under this alias or name already exists");
                     return View(game);
                 }
 
-                await service.UploadGameImage(game, webHostEnvironment.WebRootPath);
+                await gameService.UploadGameImage(game, webHostEnvironment.WebRootPath);
                 return RedirectToAction("Index");
             }
 
             return View(game);
         }
+
+        //public async Task<IActionResult> AddToCollection(Game game)
+        //{
+        //    return RedirectToAction("GameProfile", "games", new { game.Alias });
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
