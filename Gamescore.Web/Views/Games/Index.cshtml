@@ -7,6 +7,10 @@
 
 <p>
     Can't find a game you're looking for? <b><a href="~/games/add">Add one</a></b>
+    @if (!ViewBag.LoggedIn)
+    {
+        <span>(Login required)</span>
+    }
 </p>
 
 <div id="games">

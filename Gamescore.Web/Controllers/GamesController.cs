@@ -28,19 +28,30 @@ namespace Gamescore.Web.Controllers
 
         // List of all games accessed through nav menu
         public async Task<IActionResult> Index()
-        {           
+        {
+            ViewBag.LoggedIn = User.Identity.IsAuthenticated;
             return View(await gameService.GetAll());
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(Game game)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+
             if (ModelState.IsValid)
             {               
                 var wasAdded = await gameService.AddGame(game);
