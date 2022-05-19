@@ -32,6 +32,28 @@ namespace Gamescore.BLL.Services
             return true;
         }
 
+        public async Task<bool> EditGame(Game game)
+        {
+            var dbGame = await GetByName(game.Alias);
+            if (dbGame == null) return false;
+
+            dbGame.Alias = game.Alias;
+            dbGame.Name = game.Name;            
+            dbGame.NameLocalized = game.NameLocalized;
+            dbGame.ReleaseDate = game.ReleaseDate;
+
+            dbGame.PlayersMin = game.PlayersMin;
+            dbGame.PlayersMax = game.PlayersMax;
+            dbGame.DurationMin = game.DurationMin;
+            dbGame.DurationMax = game.DurationMax;
+
+            dbGame.Description = game.Description;
+
+            await uow.Save();
+
+            return true;
+        }
+
         public async Task<bool> RateGame(Game game, AppUser user, int ratingPoints)
         {
             var userRating = await GetRating(game, user);
@@ -85,6 +107,7 @@ namespace Gamescore.BLL.Services
     {
         public Task<IEnumerable<Game>> GetAll();
         public Task<bool> AddGame(Game game);
+        public Task<bool> EditGame(Game game);
         public Task<Game?> GetByName(string alias);
         public Task<bool> RateGame(Game game, AppUser user, int rating);
         public Task<Rating?> GetRating(Game game, AppUser user);

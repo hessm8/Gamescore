@@ -28,7 +28,7 @@ namespace Gamescore.Domain.Entities
 
         [NotMapped]
         [DisplayName("Upload File")]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; } = null;
 
     }
 }

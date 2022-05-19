@@ -33,19 +33,28 @@ namespace Gamescore.Web.Controllers
             return View(await gameService.GetAll());
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Add()
-        {
+        public async Task<IActionResult> Manage(string? alias = null)
+        {           
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
 
-            return View();
+            if (alias == null)
+            {                
+                return View(new ManageGameViewModel(new Game(), false));
+            }
+
+           var game = await gameService.GetByName(alias);
+            if (game == null) return NotFound();
+
+            var model = new ManageGameViewModel(game, true);
+
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Game game)
+        public async Task<IActionResult> Manage(ManageGameViewModel model)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -53,19 +62,29 @@ namespace Gamescore.Web.Controllers
             }
 
             if (ModelState.IsValid)
-            {               
-                var wasAdded = await gameService.AddGame(game);
+            {
+                logger.LogInformation(model.IsEditing.ToString());
+                if (model.IsEditing)
+                {
+                    var wasEdited = await gameService.EditGame(model.Game);
+
+                    //await gameService.UploadGameImage(game, webHostEnvironment.WebRootPath);
+                    return RedirectToAction("GameProfile", "games", new { alias = model.Game.Alias });
+                }
+
+                var wasAdded = await gameService.AddGame(model.Game);
                 if (!wasAdded)
                 {
                     ModelState.AddModelError("Alias", "The game under this alias or name already exists");
-                    return View(game);
+                    
+                    return View(model);
                 }
 
-                await gameService.UploadGameImage(game, webHostEnvironment.WebRootPath);
+                await gameService.UploadGameImage(model.Game, webHostEnvironment.WebRootPath);
                 return RedirectToAction("Index");
             }
 
-            return View(game);
+            return View(model);
         }
 
         #region Game profile

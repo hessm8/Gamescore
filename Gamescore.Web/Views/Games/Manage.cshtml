@@ -1,0 +1,90 @@
+﻿@model ManageGameViewModel
+@{
+    ViewData["Title"] = "Manage game | Gamescore";
+}
+
+<div>
+    @using (Html.BeginForm("Manage", "Games", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+
+        <div class="card" style="width:40%">
+
+            <div class="card-header">
+                @(!Model.IsEditing ? "Add" : "Edit") game
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-group" style="color:red;">@Html.ValidationMessageFor(model => model.Game.Alias)</div>
+
+                @Html.HiddenFor(m => m.IsEditing)
+                
+                <div class="form-group">
+                    <label for="game-alias">Alias</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="inputGroupPrepend2">games /</span>
+                        <input type="text" name="Game.Alias" class="form-control" id="game-alias" placeholder="URL adress for game" value="@Model?.Game?.Alias" />
+                    </div>
+@*                    <div id="game-aliasFeedback" class="invalid-feedback">                      
+                    </div>*@
+                </div>
+
+                <div class="form-group">
+                    <label for="game-name">Name</label>
+                    <input type="text" name="Game.Name" class="form-control" id="game-name" placeholder="Full name of the game" value="@Model?.Game?.Name"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="game-name2">Name (localized)</label>
+                    <input type="text" name="Game.NameLocalized" class="form-control" id="game-name2" placeholder="Full name in Russian" value="@Model?.Game?.NameLocalized" />
+                </div>
+
+                <div class="form-group">
+                    <label for="game-image">Image</label>
+                    <input asp-for="Game.ImageFile" accept="image/png" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="game-date">Release date</label>
+                    <input type="number" name="Game.ReleaseDate" class="form-control" id="game-date" placeholder="Year" value="@Model?.Game?.ReleaseDate" min="1950" max="2030" />
+                </div>
+
+                <div class="form-group">
+                    <label for="game-age">Min. age</label>
+                    <input type="number" name="Game.AgeMin" class="form-control" id="game-age" value="0" />
+                </div>
+
+                <div class="form-group">
+                    <label for="game-players">Players</label>
+                    <div class="d-flex flex-row justify-content-between minmax">
+                        <input type="number" name="Game.PlayersMin" class="form-control" id="game-players" value="2" min="2" max="8"  />
+                        <input type="number" name="Game.PlayersMax" class="form-control" id="game-players" value="5" min="2" max="15" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="game-alias">Duration</label>
+                    <div class="d-flex flex-row justify-content-between minmax">
+                        <input type="number" name="Game.DurationMin" class="form-control" id="game-time" value="5" min="3" />
+                        <input type="number" name="Game.DurationMax" class="form-control" id="game-time" value="10" min="3" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="game-desc">Description</label>
+                    <textarea name="Game.Description" class="form-control" id="game-desc" placeholder="Description of the game">@Model?.Game?.Description</textarea>
+                </div>
+
+                <div class="form-group">
+                    <input class="btn btn-primary" type="submit" value="Submit" />
+                </div>
+
+            </div>
+
+        </div>
+
+    }
+</div>
+

@@ -6,7 +6,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    Can't find a game you're looking for? <b><a href="~/games/add">Add one</a></b>
+    Can't find a game you're looking for? <b>@Html.ActionLink("Add one", "manage")</b>
     @if (!ViewBag.LoggedIn)
     {
         <span>(Login required)</span>

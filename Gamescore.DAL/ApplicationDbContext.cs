@@ -18,9 +18,9 @@ namespace Gamescore.DAL
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Game>()
-                .HasIndex(game => game.Alias)
-                .IsUnique();
+            //builder.Entity<Game>()
+            //    .HasIndex(game => game.Alias)
+            //    .IsUnique();
 
             // Friend requests
 
