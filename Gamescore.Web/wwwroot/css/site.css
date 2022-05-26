@@ -26,12 +26,13 @@ a {
 }
 
 .form-group {
-    display: flex;
-    align-items: center;
+/*    display: flex;
+    align-items: center;*/
     margin-bottom: 0.5em;
 }
 
 .form-group label {
-    flex-basis: 150px;
-    margin-right: 1em;
+/*    flex-basis: 150px;
+    margin-right: 1em;*/
+    margin-bottom: 0.25em;
 }
