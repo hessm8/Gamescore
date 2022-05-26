@@ -69,6 +69,10 @@
                         onclick="location.href='@Url.Action("manage", "games",
                         new { alias = Model.Game.Alias })'" 
                     />
+                    <input type="button" class="btn btn-primary" value="Add match" 
+                        onclick="location.href='@Url.Action("match", "games",
+                        new { alias = Model.Game.Alias })'" 
+                    />
                 </div>
 
                 <div>

@@ -1,0 +1,102 @@
+﻿@model MatchViewModel
+@{
+    ViewData["Title"] = "Add match | Gamescore";
+
+    void AddPlayer()
+    {
+        Model.AddPlayer();
+    }
+}
+
+
+<div>
+    @using (Html.BeginForm("Match", "Games", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="card" style="width:40%">
+
+            <div class="card-header">
+                Add match for game
+            </div>
+
+            <div class="card-body">
+                
+                <h3>@Html.DisplayTextFor(model => model.Game.Name)</h3>    
+                @Html.HiddenFor(model => model.Game)
+
+                @*<img class="game-image" src="@($"/data/games/{Model.Game.Alias}/image.png")" />*@
+
+                <div class="d-flex flex-row p-3">
+
+                    <div class="me-5">
+                        <div class="form-group">  
+                            @Html.LabelFor(model => model.Match.Date, new { @class = "control-label" })  
+
+                            @Html.EditorFor(model => model.Match.Date, new { htmlAttributes = new { @class = "form-control" } })  
+                            @Html.ValidationMessageFor(model => model.Match.Date, "", new { @class = "text-danger" })  
+
+                        </div>  
+
+                        <div class="form-group">  
+                            @Html.LabelFor(model => model.Match.Place, new { @class = "control-label" })  
+
+                            @Html.EditorFor(model => model.Match.Place, new { htmlAttributes = new { @class = "form-control" } })  
+                            @Html.ValidationMessageFor(model => model.Match.Place, "", new { @class = "text-danger" })  
+
+                        </div>  
+
+                        <div class="form-group">  
+                            @Html.LabelFor(model => model.Match.Duration, new { @class = "control-label" })  
+                            <div class="col-md-10">  
+                                @Html.EditorFor(model => model.Match.Duration, new { htmlAttributes = new { @class = "form-control" } })  
+                                @Html.ValidationMessageFor(model => model.Match.Duration, "", new { @class = "text-danger" })  
+                            </div>  
+                        </div>  
+
+                        <div class="form-group">  
+                            @Html.LabelFor(model => model.Match.Comment, new { @class = "control-label" })  
+                            <div class="col-md-10">  
+                                @Html.TextAreaFor(model => model.Match.Comment, new { htmlAttributes = new { @class = "form-control" } })  
+                                @Html.ValidationMessageFor(model => model.Match.Comment, "", new { @class = "text-danger" })  
+                            </div>  
+                        </div>  
+                    </div>
+
+                    <div>
+                        <h3>Players</h3>
+
+                        <p>hessm</p>
+                        @foreach (var player in Model.Match.Players)
+                        {
+                            <p>player.Player.Alias</p>
+                        }
+
+                        <button type="button" class="btn" id="addPlayerBtn">+</button>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <input class="btn btn-primary" type="submit" value="Submit" />
+                </div>
+
+            </div>
+
+        </div>
+
+    }
+</div>
+
+@section Scripts
+{
+ <script>
+
+
+     $( "#addPlayerBtn" ).ready().click(function() {
+        AddPlayer();
+     });
+
+ </script>
+} 
+

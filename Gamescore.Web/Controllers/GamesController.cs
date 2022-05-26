@@ -33,6 +33,7 @@ namespace Gamescore.Web.Controllers
             return View(await gameService.GetAll());
         }
 
+        #region Manage
         public async Task<IActionResult> Manage(string? alias = null)
         {           
             if (!User.Identity.IsAuthenticated)
@@ -86,6 +87,7 @@ namespace Gamescore.Web.Controllers
 
             return View(model);
         }
+        #endregion
 
         #region Game profile
 
@@ -124,6 +126,25 @@ namespace Gamescore.Web.Controllers
             await userService.AddToCollection(user, alias);
 
             return RedirectToAction("GameProfile", "games", new { alias });
+        }
+
+        [Route("game/{alias}/match")]
+        public async Task<IActionResult> Match(string? alias = null)
+        {
+            var user = await userService.GetUser(User);
+            if (user == null) return RedirectToAction("Login", "Account", new { area = "Identity" });
+
+            if (alias == null)
+            {
+                return RedirectToAction("Index", "games");
+            }
+
+            var game = await gameService.GetByName(alias);
+            if (game == null) return NotFound();
+
+            var model = new MatchViewModel(user, game);
+
+            return View(model);
         }
 
         #endregion
