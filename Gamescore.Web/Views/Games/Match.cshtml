@@ -4,7 +4,7 @@
 }
 
 
-<div>
+<div id="app">
     @using (Html.BeginForm("Match", "Games", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
@@ -12,7 +12,7 @@
         <div class="card" style="width:40%">
 
             <div class="card-header">
-                Add match for game
+                Add match for game ({{gameAlias}})
             </div>
 
             <div class="card-body">
@@ -61,13 +61,16 @@
                     <div>
                         <h3>Players</h3>
 
-                        <p>hessm</p>
+                        <div v-for="player in players">
+                            <p><b>{{player.username}}</b>: -{{player.team}} -{{player.points}} -{{player.isWinner}}</p>
+                        </div>
+
                         @foreach (var player in Model.Match.Players)
                         {
                             <p>player.Player.Alias</p>
                         }
 
-                        <button type="button" class="btn" id="addPlayerBtn">+</button>
+                        <button class="btn" type="button" v-on:click="test">+</button>
                     </div>
 
                 </div>
@@ -83,15 +86,33 @@
     }
 </div>
 
-@section Scripts
-{
- <script>
+<script>
+    let app = new Vue({
+        el: '#app',
+        data: {
+            gameAlias: '@Model.Game.Alias',
+            players: [
+                { 
+                    username: 'TheJack', 
+                    team: 'Red',
+                    points: 9,
+                    isWinner: true
+                },
+                {
+                    username: 'Spongebob123',
+                    team: 'Blue',
+                    points: 5,
+                    isWinner: false
+                }
+            ]
+        },
+        methods: {
+            test: function (event) {
 
-
-     //$( "#addPlayerBtn" ).ready().click(function() {
-        
-     //});
-
- </script>
-} 
+                alert('Clicked a button')
+ 
+            }
+        }
+    })
+</script>
 
