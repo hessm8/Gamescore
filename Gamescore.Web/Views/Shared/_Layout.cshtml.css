@@ -44,5 +44,10 @@ button.accept-policy {
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px;
+  line-height: 50px;
+  background: white;
+}
+
+.container-fluid {
+    width: 60%;
 }

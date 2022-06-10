@@ -1,11 +1,33 @@
-﻿.minmax {
-
+﻿.fade-enter-from,
+.fade-leave-to,
+.fade-enter {
+    opacity: 0 !important;
 }
 
-.minmax input {
-
+.fade-enter-active {
+    opacity: 1;
+    transition: all 0.8s;
 }
 
-.minmax input:first-child {
-    margin-right: 0.5em;
+.fade-leave-active {
+    opacity: 1;
+    transition: all 0.2s;
+}
+
+#app {
+    border-radius: 1em;
+    background-color: white;
+    padding: 0.4em;
+}
+
+.game-image {
+    //float: left;
+    width: 250px;
+    height: 250px;
+    border-radius: 0.8em;
+    box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+}
+
+#main-info div {
+    margin: 0 0.8em 0.8em 0;
 }

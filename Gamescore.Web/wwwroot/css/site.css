@@ -14,7 +14,23 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #EDEEF0;
+}
+
+main {
+    background: #fff;
+    padding: 2em;
+    border-radius: 1em;
+    border: solid 1px #DCE1E6;
+}
+
+.container {
+    max-width: 60%;
+}
+
+.navbar {
+    padding: 0.35em 0;
 }
 
 .form-floating {
@@ -35,4 +51,9 @@ a {
 /*    flex-basis: 150px;
     margin-right: 1em;*/
     margin-bottom: 0.25em;
+}
+
+.btn-primary {
+    background-color: #4785e1;
+    border: none;
 }

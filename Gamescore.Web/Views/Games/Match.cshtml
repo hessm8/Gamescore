@@ -3,93 +3,105 @@
     ViewData["Title"] = "Add match | Gamescore";
 }
 
-
 <div id="app">
     @using (Html.BeginForm("Match", "Games", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
-        <div class="card" style="width:40%">
+        @Html.HiddenFor(model => model.Game)                
 
-            <div class="card-header">
-                Add match for game ({{gameAlias}})
-            </div>
+        <div id="match-content" class="d-flex flex-column p-3">
 
-            <div class="card-body">
-                
-                <h3>@Html.DisplayTextFor(model => model.Game.Name)</h3>    
-                @Html.HiddenFor(model => model.Game)
+            <!-- Main info section -->
+            <div id="main-info" class="d-flex flex-row me-5">
 
-                @*<img class="game-image" src="@($"/data/games/{Model.Game.Alias}/image.png")" />*@
+                <div>
+                    <img class="game-image" src="@($"/data/games/{Model.Game.Alias}/image.png")" />
+                </div>
 
-                <div class="d-flex flex-row p-3">
+                <div id="match-data" class="d-flex flex-column">
+                    <div class="form-group">  
+                        @Html.LabelFor(model => model.Match.Date, new { @class = "control-label" })  
 
-                    <div class="me-5">
-                        <div class="form-group">  
-                            @Html.LabelFor(model => model.Match.Date, new { @class = "control-label" })  
+                        @Html.EditorFor(model => model.Match.Date, new { htmlAttributes = new { @class = "form-control" } })  
+                        @Html.ValidationMessageFor(model => model.Match.Date, "", new { @class = "text-danger" })  
 
-                            @Html.EditorFor(model => model.Match.Date, new { htmlAttributes = new { @class = "form-control" } })  
-                            @Html.ValidationMessageFor(model => model.Match.Date, "", new { @class = "text-danger" })  
+                    </div>  
 
+                    <div class="form-group">  
+                        @Html.LabelFor(model => model.Match.Place, new { @class = "control-label" })  
+
+                        @Html.EditorFor(model => model.Match.Place, new { htmlAttributes = new { @class = "form-control" } })  
+                        @Html.ValidationMessageFor(model => model.Match.Place, "", new { @class = "text-danger" })  
+
+                    </div>  
+
+                    <div class="form-group">  
+                        @Html.LabelFor(model => model.Match.Duration, new { @class = "control-label" })  
+                        <div class="col-md-10">  
+                            @Html.EditorFor(model => model.Match.Duration, new { htmlAttributes = new { @class = "form-control" } })  
+                            @Html.ValidationMessageFor(model => model.Match.Duration, "", new { @class = "text-danger" })  
                         </div>  
+                    </div>  
 
-                        <div class="form-group">  
-                            @Html.LabelFor(model => model.Match.Place, new { @class = "control-label" })  
-
-                            @Html.EditorFor(model => model.Match.Place, new { htmlAttributes = new { @class = "form-control" } })  
-                            @Html.ValidationMessageFor(model => model.Match.Place, "", new { @class = "text-danger" })  
-
-                        </div>  
-
-                        <div class="form-group">  
-                            @Html.LabelFor(model => model.Match.Duration, new { @class = "control-label" })  
-                            <div class="col-md-10">  
-                                @Html.EditorFor(model => model.Match.Duration, new { htmlAttributes = new { @class = "form-control" } })  
-                                @Html.ValidationMessageFor(model => model.Match.Duration, "", new { @class = "text-danger" })  
-                            </div>  
-                        </div>  
-
-                        <div class="form-group">  
-                            @Html.LabelFor(model => model.Match.Comment, new { @class = "control-label" })  
-                            <div class="col-md-10">  
-                                @Html.TextAreaFor(model => model.Match.Comment, new { htmlAttributes = new { @class = "form-control" } })  
-                                @Html.ValidationMessageFor(model => model.Match.Comment, "", new { @class = "text-danger" })  
-                            </div>  
-                        </div>  
-                    </div>
-
-                    <div>
-                        <h3>Players</h3>
-
-                        <div v-for="player in players">
-                            <p><b>{{player.username}}</b>: -{{player.team}} -{{player.points}} -{{player.isWinner}}</p>
-                        </div>
-
-                        @foreach (var player in Model.Match.Players)
-                        {
-                            <p>player.Player.Alias</p>
-                        }
-
-                        <button class="btn" type="button" v-on:click="test">+</button>
-                    </div>
-
+                            
                 </div>
 
                 <div class="form-group">
-                    <input class="btn btn-primary" type="submit" value="Submit" />
-                </div>
+                    <label for="commentArea" class="control-label">Comment</label>
+                    <textarea class="form-control" id="commentArea" rows="3"></textarea>
+                </div>  
 
             </div>
 
-        </div>
+            <hr>
 
+            <!-- Players section -->
+            <div id="match-players">
+
+                <h3>Players</h3>
+
+                <!-- Detailed view switch -->
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" v-model="enableDetailedView">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Detailed view</label>
+                </div>
+
+                <!-- Views for players -->
+                <transition name="fade" mode="out-in">
+                    <div v-if="!enableDetailedView" key="playerView">
+                                
+                        <template v-for="player in players">
+                            <p><b>{{player.username}}</b></p>
+                        </template>
+                        <button class="btn" type="button" v-on:click="test">+</button>
+
+                    </div>
+                    <div v-else key="detailedView">
+
+                        <template v-for="player in players">
+                            <p><b>{{player.username}}</b>:</p>
+                            <p>{{player.team}} - {{player.points}} - {{player.isWinner}}</p>
+                        </template>
+
+                    </div>
+                </transition>
+
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="Submit" />
+            </div>
+
+        </div>
     }
 </div>
 
 <script>
-    let app = new Vue({
+    var app = new Vue({
         el: '#app',
         data: {
+            enableDetailedView: false,
             gameAlias: '@Model.Game.Alias',
             players: [
                 { 
@@ -109,7 +121,7 @@
         methods: {
             test: function (event) {
 
-                alert('Clicked a button')
+                alert(' ! ')
  
             }
         }
