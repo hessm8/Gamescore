@@ -16,6 +16,7 @@ html {
 body {
     margin-bottom: 60px;
     background-color: #EDEEF0;
+    font-family: 'Lato', sans-serif;
 }
 
 main {
@@ -56,4 +57,13 @@ a {
 .btn-primary {
     background-color: #4785e1;
     border: none;
+}
+
+.card {
+    border-radius: 0.8em;
+    box-shadow: 0 0.2em 0.15em rgba(0,0,0,0.1);
+}
+
+.card-header:first-child {
+    border-radius: 0.8em 0.8em 0 0;
 }
