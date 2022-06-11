@@ -67,3 +67,7 @@ a {
 .card-header:first-child {
     border-radius: 0.8em 0.8em 0 0;
 }
+
+.navbar-brand {
+    padding-top: 0.1rem;
+}

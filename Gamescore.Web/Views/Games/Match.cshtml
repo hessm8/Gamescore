@@ -16,40 +16,37 @@
             <div id="main-info" class="d-flex flex-row me-5">
 
                 <div>
-                    <img class="game-image" src="@($"/data/games/{Model.Game.Alias}/image.png")" />
+                    <a href="/game/@Model.Game.Alias" title="Return to game page">
+                        <img class="game-image" src="@($"/data/games/{Model.Game.Alias}/image.png")" />
+                    </a>
                 </div>
 
                 <div id="match-data" class="d-flex flex-column">
-                    <div class="form-group">  
-                        @Html.LabelFor(model => model.Match.Date, new { @class = "control-label" })  
+                    <div class="form-group">
+                        <label for="match-date">Date</label>
+                        <input type="date" class="form-control" id="match-date"
+                            :value="convertDate(playDate)"
+                            v-on:input="playDate = $event.target.valueAsDate"
+                        >
+                    </div>
 
-                        @Html.EditorFor(model => model.Match.Date, new { htmlAttributes = new { @class = "form-control" } })  
-                        @Html.ValidationMessageFor(model => model.Match.Date, "", new { @class = "text-danger" })  
+                    <div class="form-group">
+                        <label for="match-place">Place</label>
+                        <input type="text" class="form-control" id="match-place" v-model="playPlace">
+                    </div>
 
-                    </div>  
-
-                    <div class="form-group">  
-                        @Html.LabelFor(model => model.Match.Place, new { @class = "control-label" })  
-
-                        @Html.EditorFor(model => model.Match.Place, new { htmlAttributes = new { @class = "form-control" } })  
-                        @Html.ValidationMessageFor(model => model.Match.Place, "", new { @class = "text-danger" })  
-
-                    </div>  
-
-                    <div class="form-group">  
-                        @Html.LabelFor(model => model.Match.Duration, new { @class = "control-label" })  
-                        <div class="col-md-10">  
-                            @Html.EditorFor(model => model.Match.Duration, new { htmlAttributes = new { @class = "form-control" } })  
-                            @Html.ValidationMessageFor(model => model.Match.Duration, "", new { @class = "text-danger" })  
-                        </div>  
-                    </div>  
+                    <div class="form-group">
+                        <label for="match-duration">Duration (minutes)</label>
+                        <input type="number" class="form-control" id="match-duration" v-model="playDuration">
+                        <small>{{calcDuration}}</small>
+                    </div>
 
                             
                 </div>
 
-                <div class="form-group">
+                <div id="group-text" class="form-group">
                     <label for="commentArea" class="control-label">Comment</label>
-                    <textarea class="form-control" id="commentArea" rows="3"></textarea>
+                    <textarea class="form-control" id="commentArea" rows="7"></textarea>
                 </div>  
 
             </div>
@@ -103,6 +100,9 @@
         data: {
             enableDetailedView: false,
             gameAlias: '@Model.Game.Alias',
+            playDate: new Date(),
+            playPlace: '',
+            playDuration: 0,
             players: [
                 { 
                     username: 'TheJack', 
@@ -118,11 +118,21 @@
                 }
             ]
         },
+        computed: {
+            calcDuration: function(){
+                let timeHours = Math.floor(this.playDuration / 60);
+                let timeMinutes = this.playDuration - timeHours * 60;
+                return `~ ${timeHours} hours, ${timeMinutes} minutes`;
+            }
+        },
         methods: {
             test: function (event) {
 
                 alert(' ! ')
  
+            },
+            convertDate: function(d) {
+    	        return d && new Date(d.getTime()-(d.getTimezoneOffset()*60*1000)).toISOString().split('T')[0]
             }
         }
     })
