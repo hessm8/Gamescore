@@ -26,8 +26,8 @@ main {
     border: solid 1px #DCE1E6;
 }
 
-.container {
-    max-width: 60%;
+.container, .container-fluid {
+    max-width: 70rem;
 }
 
 .navbar {

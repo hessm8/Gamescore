@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Html
 @model GameProfileViewModel
 @{
-    ViewData["Title"] = $"{Model.Game.Name} | Gamescore";
+    ViewData["Title"] = $"{Model.Game.Name}";
 
     Func<dynamic, object> RatingStar = @<img
         class="icon-small icon-star @item.pressed" 

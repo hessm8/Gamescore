@@ -1,6 +1,19 @@
 ﻿@model IEnumerable<Game>
 @{
-    ViewData["Title"] = "All games | Gamescore";
+    ViewData["Title"] = "All games";
+}
+
+@functions {
+    string ShortDescription(string description)
+    {        
+        if (description == null || description.Length < 1) return "";
+        if (description.Length < 100) {            
+            int sentenceEnd = description.IndexOf('.');
+            if (description.Length < 50 || sentenceEnd == -1) return description;
+            return description.Substring(0, sentenceEnd+1);
+        }
+        return description.Substring(0, 100) + "...";
+    }
 }
 
 <p>
@@ -9,45 +22,42 @@
     {
         <span>(Login required)</span>
     }
-</p>
+</p> 
 
 <div id="games">
     @foreach (var game in Model)
     {
-        <div class="card game">
+        <div class="card game">            
 
-            <div class="card-header game-points d-flex flex-row justify-content-between">
+            <div class="card-body game-points d-flex flex-row justify-content-left">
 
-                <div>
-                    <div><h3><a href="~/game/@game.Alias">@game.Name</a> (@game.ReleaseDate)</h3></div>
-                    <div><p style="color:gray;">@game.NameLocalized</p></div>
+                <a href="~/game/@game.Alias">
+                    <img class="game-image" src="@($"/data/games/{game.Alias}/image.png")" />
+                </a>
+
+                <div class="game-text">
+                    <h4><a href="~/game/@game.Alias" title="@game.NameLocalized">@game.Name</a></h4>
+                    <p style="color:gray;">@game.ReleaseDate</p>
+                    <p class="game-description">@ShortDescription(game.Description)</p>
                 </div>
 
-                <div class="game-point d-flex flex-column">
+                <div class="game-point d-flex flex-column" style="/*! flex: 2; *//*! justify-content: normal; */justify-self: right;margin: 0 0 0 auto;">
 
                     <div class="game-icon flex-row">
                         <img class="icon-small" src="/icons/chess.png" title="Players" />
-                        <div>@game.PlayersMin - @game.PlayersMax</div>
+                        <div><b>Players:</b> @game.PlayersMin - @game.PlayersMax</div>
                     </div>
                     <div class="game-icon flex-row">
                         <img class="icon-small" src="/icons/user-restrict.png" title="Min. age" />
-                        <div>@game.AgeMin+</div>
+                        <div><b>Min. age:</b> @game.AgeMin+</div>
                     </div>
                     <div class="game-icon flex-row">
                         <img class="icon-small" src="/icons/time.png" title="Game duration" />
-                        <div>@game.DurationMin - @game.DurationMax</div>
+                        <div><b>Time:</b> @game.DurationMin - @game.DurationMax</div>
                     </div>
 
-                </div>
-            </div>
+                </div> 
 
-            <div class="card-body game-desc d-flex flex-column">
-                <div class="d-flex flex-row">
-                    <img class="game-image" src="@($"/data/games/{game.Alias}/image.png")" />
-                    <p>
-                        @game.Description
-                    </p>
-                </div>
             </div>
         </div>
     }
