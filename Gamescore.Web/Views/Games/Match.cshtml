@@ -90,6 +90,15 @@
                 <input class="btn btn-primary" type="submit" value="Submit" />
             </div>
 
+            <hr>
+
+            <div id="match-search">
+                <input type="search" v-model="search.user">
+                <template v-for="found in search.usersFound">
+                    <p>{{found.userName}}</p>
+                </template>
+            </div>
+
         </div>
     }
 </div>
@@ -98,6 +107,12 @@
     var app = new Vue({
         el: '#app',
         data: {
+            search: {
+                user: '',
+                usersFound: []
+            },
+            
+
             enableDetailedView: false,
             gameAlias: '@Model.Game.Alias',
             playDate: new Date(),
@@ -118,6 +133,11 @@
                 }
             ]
         },
+        watch: {
+            'search.user': function (newInput) {
+                this.getSearchResults(newInput);
+            }
+        },
         computed: {
             calcDuration: function(){
                 let timeHours = Math.floor(this.playDuration / 60);
@@ -133,6 +153,16 @@
             },
             convertDate: function(d) {
     	        return d && new Date(d.getTime()-(d.getTimezoneOffset()*60*1000)).toISOString().split('T')[0]
+            },
+            getSearchResults: function (searchQuery) {
+	            let self = this;
+	            fetch('@Url.Action("GetSearchUsers", "Games")?'
+                    + new URLSearchParams({
+                        search: searchQuery
+                        })
+                    )
+		            .then(response => response.json())
+		            .then(data => self.search.usersFound = data);
             }
         }
     })

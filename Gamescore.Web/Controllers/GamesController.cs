@@ -150,7 +150,13 @@ namespace Gamescore.Web.Controllers
         #endregion
 
         #region Matches
+        public async Task<IActionResult> GetSearchUsers(string search)
+        {
+            //search = "a";
+            var users = await userService.GetSearchUsers(search);
 
+            return Ok(users);
+        }
         #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
