@@ -110,7 +110,8 @@
         data: {
             search: {
                 user: '',
-                usersFound: []
+                usersFound: [],
+                timeout: null
             },
             
 
@@ -144,29 +145,36 @@
             convertDate: function(d) {
     	        return d && new Date(d.getTime()-(d.getTimezoneOffset()*60*1000)).toISOString().split('T')[0]
             },
+
+            // currently gets users but players are also needed
             getSearchResults: function (searchQuery) {
-                // currently gets users but players needed
-	            let self = this;
-	            fetch('@Url.Action("GetSearchUsers", "Games")?'
+                let self = this;                              
+	            
+	            const searchFunc = () => {
+                    fetch('@Url.Action("GetSearchUsers", "Games")?'
                     + new URLSearchParams({
                         search: searchQuery
                         })
                     )
 		            .then(response => response.json())
 		            .then(data => self.search.usersFound = data);
-            },
-            addPlayer: function(user) {
-                let added = this.players.filter(p => p.userName == user);
+                }
 
-                if (added.length < 1) {
+                clearTimeout(self.search.timeout);  
+                self.search.timeout = setTimeout(searchFunc, 300)
+            },
+
+            addPlayer: function(user) {
+                let addedIndex = this.players.findIndex(p => p.userName == user);
+
+                if (addedIndex == -1) {
                     let player = {
                         userName: user,
                         owner: null
                     };
                     this.players.push(player);
                 } else {
-                    let index = this.players.indexOf(added[0]);
-                    this.players.splice(index, 1);
+                    this.players.splice(addedIndex, 1);
                 }
             },
             addPlayerFromSearch: function() {
