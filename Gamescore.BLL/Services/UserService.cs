@@ -22,12 +22,20 @@ namespace Gamescore.BLL.Services
             return await userManager.Users.ToListAsync();
         }
 
-        public async Task<IEnumerable<AppUser>> GetSearchUsers(string search)
+        public async Task<IEnumerable<string>> GetSearchUsers(string search)
         {
-            if (string.IsNullOrEmpty(search)) return await userManager.Users.Take(10).ToListAsync();
+            if (string.IsNullOrEmpty(search))
+            {
+                return await userManager.Users
+                    .Select(u => u.UserName)
+                    .Take(10)
+                    .ToListAsync();
+            }
 
             return await userManager.Users
-                .Where(u => u.UserName.Contains(search)).Take(10)
+                .Where(u => u.UserName.Contains(search))
+                .Select(u => u.UserName)
+                .Take(10)
                 .ToListAsync();
         }
 
@@ -151,7 +159,7 @@ namespace Gamescore.BLL.Services
     public interface IUserService
     {
         public Task<IEnumerable<AppUser>> GetAll();
-        public Task<IEnumerable<AppUser>> GetSearchUsers(string search);
+        public Task<IEnumerable<string>> GetSearchUsers(string search);
         public Task<bool> AddToCollection(AppUser user, string alias);
         public Task<bool> ManageFriendRequest(ClaimsPrincipal User, string name, string action);
         Task<IEnumerable<AppUser>> GetFriends(AppUser user);

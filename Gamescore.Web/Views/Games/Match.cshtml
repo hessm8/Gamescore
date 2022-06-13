@@ -69,15 +69,14 @@
                     <div v-if="!enableDetailedView" key="playerView">
                                 
                         <template v-for="player in players">
-                            <p><b>{{player.username}}</b></p>
+                            <p><b>{{player.userName}}</b></p>
                         </template>
-                        <button class="btn" type="button" v-on:click="test">+</button>
 
                     </div>
                     <div v-else key="detailedView">
 
                         <template v-for="player in players">
-                            <p><b>{{player.username}}</b>:</p>
+                            <p><b>{{player.userName}}</b>:</p>
                             <p>{{player.team}} - {{player.points}} - {{player.isWinner}}</p>
                         </template>
 
@@ -93,9 +92,11 @@
             <hr>
 
             <div id="match-search">
+                <h3>Search</h3>
                 <input type="search" v-model="search.user">
+                <p v-if="search.user.length > 0" v-on:click="addPlayerFromSearch">"{{search.user}}" (non-user player)</p>
                 <template v-for="found in search.usersFound">
-                    <p>{{found.userName}}</p>
+                    <p v-on:click="() => addPlayer(found)">{{found}}</p>
                 </template>
             </div>
 
@@ -119,18 +120,12 @@
             playPlace: '',
             playDuration: 0,
             players: [
-                { 
-                    username: 'TheJack', 
+                /*{ 
+                    userName: 'TheJack', 
                     team: 'Red',
                     points: 9,
                     isWinner: true
-                },
-                {
-                    username: 'Spongebob123',
-                    team: 'Blue',
-                    points: 5,
-                    isWinner: false
-                }
+                }*/
             ]
         },
         watch: {
@@ -146,15 +141,11 @@
             }
         },
         methods: {
-            test: function (event) {
-
-                alert(' ! ')
- 
-            },
             convertDate: function(d) {
     	        return d && new Date(d.getTime()-(d.getTimezoneOffset()*60*1000)).toISOString().split('T')[0]
             },
             getSearchResults: function (searchQuery) {
+                // currently gets users but players needed
 	            let self = this;
 	            fetch('@Url.Action("GetSearchUsers", "Games")?'
                     + new URLSearchParams({
@@ -163,6 +154,27 @@
                     )
 		            .then(response => response.json())
 		            .then(data => self.search.usersFound = data);
+            },
+            addPlayer: function(user) {
+                let added = this.players.filter(p => p.userName == user);
+
+                if (added.length < 1) {
+                    let player = {
+                        userName: user,
+                        owner: null
+                    };
+                    this.players.push(player);
+                } else {
+                    let index = this.players.indexOf(added[0]);
+                    this.players.splice(index, 1);
+                }
+            },
+            addPlayerFromSearch: function() {
+                let player = {
+                    userName: this.search.user,
+                    owner: null
+                };
+                this.players.push(player);
             }
         }
     })
