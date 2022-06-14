@@ -79,16 +79,16 @@
                             <div class="m-1">
                                 <p v-on:click="() => togglePlayer(player.userName)"><b>{{player.userName}}</b>:</p>
                                 <div class="form-group">
-                                    <label for="player-team-{{index}}">Team</label>
-                                    <input type="text" class="form-control" id="player-team-{{index}}" v-model="player.team">
+                                    <label :for="'player-team-' + index">Team</label>
+                                    <input type="text" class="form-control" :id="'player-team-' + index" v-model="player.team">
                                 </div>
                                 <div class="form-group">
-                                    <label for="player-points-{{index}}">Score</label>
-                                    <input type="number" class="form-control" id="player-points-{{index}}" v-model="player.points">
+                                    <label :for="'player-points-' + index">Score</label>
+                                    <input type="number" class="form-control" :id="'player-points-' + index" v-model="player.points">
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" role="checkbox" id="player-winner-{{index}}" v-model="player.isWinner">
-                                    <label class="form-check-label" for="player-winner-{{index}}">Won?</label>
+                                    <input class="form-check-input" type="checkbox" role="checkbox" :id="'player-winner-' + index" v-model="player.isWinner">
+                                    <label class="form-check-label" :for="'player-winner-' + index">Won?</label>
                                 </div>
                             </div>
                         </template>
