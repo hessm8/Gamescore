@@ -7,45 +7,52 @@ namespace Gamescore.Web.Models
 {
     public class MatchViewModel
     {
-        public MatchViewModel(AppUser owner, Game? game)
-        {
-            Owner = owner;
+        //public MatchViewModel(AppUser owner, Game? game)
+        //{
+        //    Owner = owner;
 
-            // Need to get Match from the db
+        //    // Need to get Match from the db
 
-            Match = new Match()
-            {
-                Game = game
-            };
-        }
+        //    Match = new Match()
+        //    {
+        //        Game = game
+        //    };
+        //}
 
-        public MatchViewModel() { }
+        //public MatchViewModel() { }
 
-        AppUser Owner { get; set; }
+        //gameAlias: '@Model.GameAlias',
+        //date: new Date(),
+        //place: '',
+        //duration: 0,
+        //players: []
 
-        public Match Match { get; set; }
-        public List<Player> PlayersOfUser { get; set; }
-        public Game Game => Match.Game;
+        public string GameAlias { get; set; }
+        public DateTime Date { get; set; }
+        public string Place { get; set; }
+        public int Duration { get; set; }
+        public string Comment { get; set; }
+        public List<PlayerViewModel> Players { get; set; }
 
-        public void AddPlayer()
-        {
-            var player = new Player()
-            {
-                Alias = "Test " + PlayersOfUser.Count(),
-                OwnerId = Owner.Id
-            };
-            PlayersOfUser.Add(player);
+        //public void AddPlayer()
+        //{
+        //    var player = new Player()
+        //    {
+        //        Alias = "Test " + PlayersOfUser.Count(),
+        //        OwnerId = Owner.Id
+        //    };
+        //    PlayersOfUser.Add(player);
 
-            Match.Players.Add(
-                new MatchPlayer()
-                {
-                    MatchId = Match.Id,
-                    PlayerId = player.Id,
-                    IsWinner = true,
-                    Points = 5,
-                    Team = "Blue"
-                }    
-            );
-        }
+        //    Match.Players.Add(
+        //        new MatchPlayer()
+        //        {
+        //            MatchId = Match.Id,
+        //            PlayerId = player.Id,
+        //            IsWinner = true,
+        //            Points = 5,
+        //            Team = "Blue"
+        //        }    
+        //    );
+        //}
     }
 }

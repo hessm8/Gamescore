@@ -142,7 +142,10 @@ namespace Gamescore.Web.Controllers
             var game = await gameService.GetByName(alias);
             if (game == null) return NotFound();
 
-            var model = new MatchViewModel(user, game);
+            var model = new MatchViewModel()
+            {
+                GameAlias = alias               
+            };
 
             return View(model);
         }
@@ -150,13 +153,21 @@ namespace Gamescore.Web.Controllers
         #endregion
 
         #region Matches
+
         public async Task<IActionResult> GetSearchUsers(string search)
         {
-            //search = "a";
             var users = await userService.GetSearchUsers(search);
 
             return Ok(users);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitMatch([FromBody] MatchViewModel match)
+        {
+
+            return Ok(match);
+        }
+
         #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
