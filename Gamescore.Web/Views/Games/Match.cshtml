@@ -25,19 +25,19 @@
                     <div class="form-group">
                         <label for="match-date">Date</label>
                         <input type="date" class="form-control" id="match-date"
-                            :value="convertDate(playDate)"
-                            v-on:input="playDate = $event.target.valueAsDate"
+                            :value="convertDate(match.date)"
+                            v-on:input="match.date = $event.target.valueAsDate"
                         >
                     </div>
 
                     <div class="form-group">
                         <label for="match-place">Place</label>
-                        <input type="text" class="form-control" id="match-place" v-model="playPlace">
+                        <input type="text" class="form-control" id="match-place" v-model="match.place">
                     </div>
 
                     <div class="form-group">
                         <label for="match-duration">Duration (minutes)</label>
-                        <input type="number" class="form-control" id="match-duration" v-model="playDuration">
+                        <input type="number" class="form-control" id="match-duration" v-model="match.duration">
                         <small>{{calcDuration}}</small>
                     </div>
 
@@ -94,9 +94,9 @@
             <div id="match-search">
                 <h3>Search</h3>
                 <input type="search" v-model="search.user">
-                <p v-if="search.user.length > 0" v-on:click="addPlayerFromSearch">"{{search.user}}" (non-user player)</p>
+                <p v-if="search.user.length > 0" v-on:click="() => addPlayer(search.user, false)">"{{search.user}}" (non-user player)</p>
                 <template v-for="found in search.usersFound">
-                    <p v-on:click="() => addPlayer(found)">{{found}}</p>
+                    <p v-on:click="() => addPlayer(found, true)">{{found}}</p>
                 </template>
             </div>
 
@@ -108,18 +108,18 @@
     var app = new Vue({
         el: '#app',
         data: {
+            enableDetailedView: false,
             search: {
                 user: '',
                 usersFound: [],
                 timeout: null
+            },        
+            match: {
+                gameAlias: '@Model.Game.Alias',
+                date: new Date(),
+                place: '',
+                duration: 0
             },
-            
-
-            enableDetailedView: false,
-            gameAlias: '@Model.Game.Alias',
-            playDate: new Date(),
-            playPlace: '',
-            playDuration: 0,
             players: [
                 /*{ 
                     userName: 'TheJack', 
@@ -136,8 +136,8 @@
         },
         computed: {
             calcDuration: function(){
-                let timeHours = Math.floor(this.playDuration / 60);
-                let timeMinutes = this.playDuration - timeHours * 60;
+                let timeHours = Math.floor(this.match.duration / 60);
+                let timeMinutes = this.match.duration - timeHours * 60;
                 return `~ ${timeHours} hours, ${timeMinutes} minutes`;
             }
         },
@@ -164,25 +164,18 @@
                 self.search.timeout = setTimeout(searchFunc, 300)
             },
 
-            addPlayer: function(user) {
-                let addedIndex = this.players.findIndex(p => p.userName == user);
+            addPlayer: function(name, registered) {
+                let addedIndex = this.players.findIndex(p => p.userName == name);
 
                 if (addedIndex == -1) {
                     let player = {
-                        userName: user,
-                        owner: null
+                        userName: name,
+                        registered: registered
                     };
                     this.players.push(player);
                 } else {
                     this.players.splice(addedIndex, 1);
                 }
-            },
-            addPlayerFromSearch: function() {
-                let player = {
-                    userName: this.search.user,
-                    owner: null
-                };
-                this.players.push(player);
             }
         }
     })
