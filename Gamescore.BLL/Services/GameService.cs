@@ -101,6 +101,68 @@ namespace Gamescore.BLL.Services
                 await game.ImageFile.CopyToAsync(fileStream);
             }
         }
+
+        private async Task<Player?> GetPlayer(AppUser owner, string userName, bool registered)
+        {
+            Player? player;
+            if (!registered)
+            {
+                player = await uow.Players.GetFirst(p =>
+                    p.OwnerId == owner.Id &&
+                    p.Alias == userName
+                );
+
+                if (player != null) return player;
+
+                return await CreatePlayer(owner, userName, registered);
+            }
+
+            var userPlayer = await uow.Users.GetFirst(u => u.UserName == userName);
+            if (userPlayer == null) return null; // ?
+
+            player = await uow.Players.GetFirst(p =>
+                p.OwnerId == owner.Id &&
+                p.UserPlayerId == userPlayer.Id
+            );
+
+            if (player != null) return player;
+
+            return await CreatePlayer(owner, userName, registered, userPlayer.Id);
+        }
+
+        private async Task<Player> CreatePlayer(AppUser owner, string userName,
+            bool registered, Guid? userPlayerId = null)
+        {
+            var player = new Player();
+            player.OwnerId = owner.Id;
+
+            if (!registered) player.Alias = userName;
+            else player.UserPlayerId = userPlayerId;
+
+            return await uow.Players.Create(player);
+        }
+
+        public async Task<bool> AddMatch(AppUser requestedFrom, Match match, List<PlayerDTO> playersReceived)
+        {
+            foreach (var playerToAdd in playersReceived)
+            {
+                var dbPlayer = await GetPlayer(requestedFrom, playerToAdd.UserName, playerToAdd.Registered);
+                match.Players.Add(
+                    new MatchPlayer()
+                    {
+                        PlayerId = dbPlayer.Id,
+                        IsWinner = playerToAdd.IsWinner,
+                        Points = playerToAdd.Points,
+                        Team = playerToAdd.Team                        
+                    }
+                );
+            }
+
+            await uow.Matches.Create(match);
+            await uow.Save();
+
+            return true;
+        }
     }
 
     public interface IGameService
@@ -112,5 +174,6 @@ namespace Gamescore.BLL.Services
         public Task<bool> RateGame(Game game, AppUser user, int rating);
         public Task<Rating?> GetRating(Game game, AppUser user);
         public Task UploadGameImage(Game game, string basePath);
+        public Task<bool> AddMatch(AppUser requestedFrom, Match match, List<PlayerDTO> players);
     }
 }

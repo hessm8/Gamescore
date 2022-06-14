@@ -1,5 +1,7 @@
 ﻿namespace Gamescore.Domain.Entities
 {
+    // Entity between Match and Player tables
+    // Stores additional match data for player  
     public class MatchPlayer
     {
         public Guid MatchId { get; set; }

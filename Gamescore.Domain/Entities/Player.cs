@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gamescore.Domain.Entities
 {
+    // Player entity to store user-added (owner's) player
+
     [Table("Players")]
-    public class Player : BaseEntity
+    public class Player : BaseEntity 
     {
         [Required]
         public Guid OwnerId { get; set; }

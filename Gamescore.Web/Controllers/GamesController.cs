@@ -162,10 +162,26 @@ namespace Gamescore.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitMatch([FromBody] MatchViewModel match)
+        public async Task<IActionResult> SubmitMatch([FromBody] MatchViewModel viewModel)
         {
+            var requestedFrom = await userService.GetUser(User);
+            if (requestedFrom == null) return RedirectToAction("Login", "Account", new { area = "Identity" });
 
-            return Ok(match);
+            var game = await gameService.GetByName(viewModel.GameAlias);
+            if (game == null) return BadRequest();
+
+            var match = new Match()
+            {
+                Game = game,
+                Comment = viewModel.Comment,
+                Date = viewModel.Date,
+                Duration = viewModel.Duration,
+                Place = viewModel.Place
+            };
+
+            await gameService.AddMatch(requestedFrom, match, viewModel.Players);
+
+            return Ok(viewModel);
         }
 
         #endregion
