@@ -60,14 +60,17 @@
                 <div class="form-check form-switch mb-4">
                     <input class="form-check-input" type="checkbox" role="switch" id="switchView" v-model="enableDetailedView">
                     <label class="form-check-label" for="switchView">Detailed view</label>
-                </div>
+                </div>                
 
                 <!-- Views for players -->
                 <transition name="fade" mode="out-in">
                     <div v-if="!enableDetailedView" key="playerView">
                                 
                         <template v-for="player in match.players">
-                            <p v-on:click="() => togglePlayer(player.userName)"><b>{{player.userName}}</b></p>
+                            <p class="player-toggle" v-on:click="() => togglePlayer(player.userName, player.registered)">
+                                <b>{{player.userName}}</b> 
+                                <span v-if="!player.registered">(non-user)</span> 
+                            </p>
                         </template>
 
                     </div>
@@ -75,7 +78,10 @@
 
                         <template v-for="(player, index) in match.players">
                             <div class="m-1">
-                                <p v-on:click="() => togglePlayer(player.userName)"><b>{{player.userName}}</b>:</p>
+                                <p class="player-toggle" v-on:click="() => togglePlayer(player.userName, player.registered)">
+                                    <b>{{player.userName}}</b> 
+                                    <span v-if="!player.registered">(non-user)</span> 
+                                </p>
                                 <div class="form-group">
                                     <label :for="'player-team-' + index">Team</label>
                                     <input type="text" class="form-control" :id="'player-team-' + index" v-model="player.team">
@@ -97,7 +103,18 @@
             </div>
 
             <div class="form-group mt-2">
-                <input class="btn btn-primary" type="button" value="Submit" v-on:click="submitMatch">
+
+                <transition name="fade" mode="out-in">
+                    <div v-if="match.players.length < 1" key="noPlayers">
+                        <p><small>Add players using the search tab first</small></p>
+                    </div>
+                    <div v-else-if="submitStatus == 'success'" key="submitted">
+                        <p>Match was successfully added. Redirecting to game page...</p>
+                    </div>
+                    <input v-else key="hasPlayers" class="btn btn-primary" type="button" value="Submit"
+                        v-on:click="submitMatch" :disabled="match.players.length < 1">
+                </transition>
+                
             </div>
 
             <hr>
@@ -106,21 +123,33 @@
             <div id="match-search">
                 <h3>Search</h3>
                 <input class="form-control" type="search" v-model="search.user" placeholder="Search player or add player name" style="width:16rem;">
-                <p v-if="search.user.length > 0" v-on:click="() => togglePlayer(search.user, false)">"{{search.user}}" (non-user player)</p>
-                <template v-for="found in search.usersFound">
-                    <p v-on:click="() => togglePlayer(found, true)">{{found}}</p>
-                </template>
+
+                <div id="search-users">
+                    <p class="player-toggle" v-if="search.user.length > 0" v-on:click="() => togglePlayer(search.user, false)">"{{search.user}}" (non-user player)</p>
+                    <template v-for="found in search.usersFound">
+                        <p class="player-toggle" v-on:click="() => togglePlayer(found, true)">{{found}}</p>
+                    </template>
+                </div>
             </div>
 
         </div>
     </form>
+
+    <div id="submitModal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                Match was succesfully added! Redirecting to game page...
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
     var app = new Vue({
         el: '#app',
         data: {
-            enableDetailedView: false,
+            enableDetailedView: true,
+            submitStatus: 'none',
             search: {
                 user: '',
                 usersFound: [],
@@ -173,8 +202,11 @@
                 self.search.timeout = setTimeout(searchFunc, 300)
             },
 
-            togglePlayer: function(name, registered = true) {
-                let addedIndex = this.match.players.findIndex(p => p.userName == name);
+            togglePlayer: function(name, registered) {
+                let addedIndex = this.match.players.findIndex(
+                    p => p.userName == name && 
+                    p.registered == registered
+                );
 
                 if (addedIndex == -1) {
                     let player = {
@@ -191,6 +223,7 @@
             },
 
             submitMatch: function () {
+
                 let self = this;
                 fetch('@Url.Action("SubmitMatch", "Games")', {
                     method: 'POST',
@@ -201,7 +234,14 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data) console.log(data)
+                    if (data) console.log('success?');
+
+                    self.submitStatus = 'success';
+
+                    self.search.timeout = setTimeout(() => {
+                        window.location = '@Url.Action("GameProfile", "Games", new { alias = Model.GameAlias })';
+                    }, 2500)
+                    
                 })
             }
         }

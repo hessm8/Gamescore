@@ -44,3 +44,14 @@ textarea {
     resize: none;
     height: 75%;
 }
+
+.player-toggle {
+    max-width: max-content;
+    cursor: pointer;
+    transition: color ease-in-out 0.1s;
+}
+
+.player-toggle:hover {
+    color: #0d6efd;
+    transition: color ease-in-out 0.1s;
+}

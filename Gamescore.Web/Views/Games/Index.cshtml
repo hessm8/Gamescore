@@ -7,12 +7,15 @@
     string ShortDescription(string description)
     {        
         if (description == null || description.Length < 1) return "";
-        if (description.Length < 100) {            
-            int sentenceEnd = description.IndexOf('.');
-            if (description.Length < 50 || sentenceEnd == -1) return description;
-            return description.Substring(0, sentenceEnd+1);
-        }
-        return description.Substring(0, 100) + "...";
+
+        int sentenceEnd = description.IndexOf('.');
+        if (sentenceEnd == -1) return description;
+
+        description = description.Substring(0, sentenceEnd+1);
+
+        if (description.Length < 150) return description;
+
+        return description.Substring(0, 150) + "...";
     }
 }
 
