@@ -46,7 +46,7 @@ namespace Gamescore.Web.Controllers
                 return View(new ManageGameViewModel(new Game(), false));
             }
 
-           var game = await gameService.GetByName(alias);
+            var game = await gameService.GetByName(alias);
             if (game == null) return NotFound();
 
             var model = new ManageGameViewModel(game, true);
@@ -68,6 +68,7 @@ namespace Gamescore.Web.Controllers
                 if (model.IsEditing)
                 {
                     var wasEdited = await gameService.EditGame(model.Game);
+                    if (model.Game.ImageFile != null) await gameService.UploadGameImage(model.Game, webHostEnvironment.WebRootPath);
 
                     //await gameService.UploadGameImage(game, webHostEnvironment.WebRootPath);
                     return RedirectToAction("GameProfile", "games", new { alias = model.Game.Alias });
@@ -128,6 +129,10 @@ namespace Gamescore.Web.Controllers
             return RedirectToAction("GameProfile", "games", new { alias });
         }
 
+        #endregion
+
+        #region Matches
+
         [Route("game/{alias}/match")]
         public async Task<IActionResult> Match(string? alias = null)
         {
@@ -144,15 +149,11 @@ namespace Gamescore.Web.Controllers
 
             var model = new MatchViewModel()
             {
-                GameAlias = alias               
+                GameAlias = alias
             };
 
             return View(model);
         }
-
-        #endregion
-
-        #region Matches
 
         public async Task<IActionResult> GetSearchUsers(string search)
         {
