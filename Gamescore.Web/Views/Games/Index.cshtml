@@ -27,36 +27,36 @@
     }
 </p> 
 
-<div id="games">
-    @foreach (var game in Model)
+<div id="entities">
+    @foreach (var entity in Model)
     {
-        <div class="card game">            
+        <div class="card entity">            
 
-            <div class="card-body game-points d-flex flex-row justify-content-left">
+            <div class="card-body d-flex flex-row justify-content-left">
 
-                <a href="~/game/@game.Alias">
-                    <img class="game-image" src="@($"/data/games/{game.Alias}/image.png")" />
+                <a href="~/game/@entity.Alias">
+                    <img class="entity-image" src="@($"/data/games/{entity.Alias}/image.png")" />
                 </a>
 
-                <div class="game-text">
-                    <h4><a href="~/game/@game.Alias" title="@game.NameLocalized">@game.Name</a></h4>
-                    <p style="color:gray;">@game.ReleaseDate</p>
-                    <p class="game-description">@ShortDescription(game.Description)</p>
+                <div class="entity-text">
+                    <h4><a href="~/game/@entity.Alias" title="@entity.NameLocalized">@entity.Name</a></h4>
+                    <p style="color:gray;">@entity.ReleaseDate</p>
+                    <p class="entity-description">@ShortDescription(entity.Description)</p>
                 </div>
 
-                <div class="game-point d-flex flex-column" style="/*! flex: 2; *//*! justify-content: normal; */justify-self: right;margin: 0 0 0 auto;">
+                <div class="icon-set d-flex flex-column">
 
                     <div class="game-icon flex-row">
-                        <img class="icon-small" src="/icons/chess.png" title="Players" />
-                        <div><b>Players:</b> @game.PlayersMin - @game.PlayersMax</div>
+                        <img class="icon" src="/icons/chess.png" title="Players" />
+                        <div><b>Players:</b> @entity.PlayersMin - @entity.PlayersMax</div>
                     </div>
                     <div class="game-icon flex-row">
-                        <img class="icon-small" src="/icons/user-restrict.png" title="Min. age" />
-                        <div><b>Min. age:</b> @game.AgeMin+</div>
+                        <img class="icon" src="/icons/user-restrict.png" title="Min. age" />
+                        <div><b>Min. age:</b> @entity.AgeMin+</div>
                     </div>
                     <div class="game-icon flex-row">
-                        <img class="icon-small" src="/icons/time.png" title="Game duration" />
-                        <div><b>Time:</b> @game.DurationMin - @game.DurationMax</div>
+                        <img class="icon" src="/icons/time.png" title="Game duration" />
+                        <div><b>Time:</b> @entity.DurationMin - @entity.DurationMax</div>
                     </div>
 
                 </div> 

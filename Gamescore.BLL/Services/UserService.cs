@@ -19,7 +19,7 @@ namespace Gamescore.BLL.Services
 
         public async Task<IEnumerable<AppUser>> GetAll()
         {
-            return await userManager.Users.ToListAsync();
+            return await GetLoadedUsers().GetAll();
         }
 
         public async Task<IEnumerable<string>> GetSearchUsers(string search)
@@ -57,14 +57,18 @@ namespace Gamescore.BLL.Services
         {
             if (user == null) return null;
 
-            user = await uow.Users
+            user = await GetLoadedUsers().GetFirst(u => u.Id == user.Id);
+
+            return user;
+        }
+
+        private Repository<AppUser> GetLoadedUsers()
+        {
+            return uow.Users
                 .Include("GamesFavorited")
                 .Include("GamesRated")
                 .Include("SentFriendRequests")
-                .Include("ReceievedFriendRequests")
-                .GetFirst(u => u.Id == user.Id);
-
-            return user;
+                .Include("ReceievedFriendRequests");
         }
 
         #endregion
