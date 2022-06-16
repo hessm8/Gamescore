@@ -5,7 +5,7 @@
 
     Func<dynamic, object> RatingStar = @<img
         class="icon-small icon-star @item.pressed" 
-        src="/icons/star.png" 
+        src="/images/icons/star.png" 
         star-index="@item.index" 
         game-alias="@Model.Game.Alias"
         onclick="location.href='@Url.Action("RateGame", "games", new {
@@ -36,15 +36,15 @@
                 <div class="game-point d-flex flex-column">
 
                     <div class="game-icon flex-row">
-                        <img class="icon-small" src="/icons/chess.png" title="Players" />
+                        <img class="icon-small" src="/images/icons/chess.png" title="Players" />
                         <div>@Model.Game.PlayersMin - @Model.Game.PlayersMax</div>
                     </div>
                     <div class="game-icon flex-row">
-                        <img class="icon-small" src="/icons/user-restrict.png" title="Min. age" />
+                        <img class="icon-small" src="/images/icons/user-restrict.png" title="Min. age" />
                         <div>@Model.Game.AgeMin+</div>
                     </div>
                     <div class="game-icon flex-row">
-                        <img class="icon-small" src="/icons/time.png" title="Game duration" />
+                        <img class="icon-small" src="/images/icons/time.png" title="Game duration" />
                         <div>@Model.Game.DurationMin - @Model.Game.DurationMax</div>
                     </div>
 

@@ -90,15 +90,23 @@ namespace Gamescore.BLL.Services
 
         public async Task UploadGameImage(Game game, string basePath)
         {           
+            // Create directory for game if needed
             string directory = $"{basePath}\\data\\games\\{game.Alias}";           
-            Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(directory);            
 
+            // Set up default picture if none provided
+            if (game.ImageFile == null)
+            {
+                File.Copy($"{basePath}\\images\\common\\unknown-game.png", $"{directory}\\image.png");
+                return;
+            }
+
+            // Upload game picture
             string extension = Path.GetExtension(game.ImageFile.FileName);
             string filePath = $"{directory}\\image{extension}";
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                await game.ImageFile.CopyToAsync(fileStream);
+                await game.ImageFile.CopyToAsync(stream);
             }
         }
 
