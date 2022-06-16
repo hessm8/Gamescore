@@ -4,7 +4,7 @@
     ViewData["Title"] = $"{Model.Game.Name}";
 
     Func<dynamic, object> RatingStar = @<img
-        class="icon-small icon-star @item.pressed" 
+        class="icon icon-star @item.pressed" 
         src="/images/icons/star.png" 
         star-index="@item.index" 
         game-alias="@Model.Game.Alias"
@@ -22,75 +22,74 @@
     }
 }
 
-<div id="games">
+<div id="entity">
+    <div id="main-tab" class="d-flex flex-row justify-content-left">
+        <a href="~/game/@Model.Game.Alias/match">
+            <img class="entity-image big" src="@($"/data/games/{Model.Game.Alias}/image.png")" />
+        </a>
 
-        <div class="card game">
+        <div id="info">
+            <div class="entity-text">
+                <h2><a href="~/game/@Model.Game.Alias">@Model.Game.Name</a> (@Model.Game.NameLocalized)</h2>
+                <p class="title-secondary">@Model.Game.ReleaseDate</p>
+            
+            </div>
 
-            <div class="card-header game-points d-flex flex-row justify-content-between">
+            <div class="icon-set d-flex flex-column">
 
-                <div>
-                    <div><h3>@Model.Game.Name (@Model.Game.ReleaseDate)</h3></div>
-                    <div><p style="color:gray;">@Model.Game.NameLocalized</p></div>
+                <div class="game-icon flex-row">
+                    <img class="icon" src="/images/icons/chess.png" title="Players" />
+                    <div><b>Players:</b> @Model.Game.PlayersMin - @Model.Game.PlayersMax</div>
+                </div>
+                <div class="game-icon flex-row">
+                    <img class="icon" src="/images/icons/user-restrict.png" title="Min. age" />
+                    <div><b>Min. age:</b> @Model.Game.AgeMin+</div>
+                </div>
+                <div class="game-icon flex-row">
+                    <img class="icon" src="/images/icons/time.png" title="Game duration" />
+                    <div><b>Time:</b> @Model.Game.DurationMin - @Model.Game.DurationMax</div>
                 </div>
 
-                <div class="game-point d-flex flex-column">
+            </div> 
 
-                    <div class="game-icon flex-row">
-                        <img class="icon-small" src="/images/icons/chess.png" title="Players" />
-                        <div>@Model.Game.PlayersMin - @Model.Game.PlayersMax</div>
-                    </div>
-                    <div class="game-icon flex-row">
-                        <img class="icon-small" src="/images/icons/user-restrict.png" title="Min. age" />
-                        <div>@Model.Game.AgeMin+</div>
-                    </div>
-                    <div class="game-icon flex-row">
-                        <img class="icon-small" src="/images/icons/time.png" title="Game duration" />
-                        <div>@Model.Game.DurationMin - @Model.Game.DurationMax</div>
-                    </div>
 
+            <div class="action-buttons">
+                <input type="button" class="btn btn-primary" value="@(!Model.InCollection ? "Favorite" : "Unfavorite")" 
+                    onclick="location.href='@Url.Action("AddToCollection", "games",
+                    new { alias = Model.Game.Alias })'" 
+                />
+                <input type="button" class="btn btn-primary" value="Edit" 
+                    onclick="location.href='@Url.Action("manage", "games",
+                    new { alias = Model.Game.Alias })'" 
+                />
+                <input type="button" class="btn btn-primary" value="Add match" 
+                    onclick="location.href='@Url.Action("match", "games",
+                    new { alias = Model.Game.Alias })'" 
+                />
+            </div>
+
+            <div class="rating-section d-flex flex-row">
+                <p>My rating</p>
+                <div class="rating">
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        @RatingStar(new { 
+                            index = i,
+                            pressed = i < GetRating() ? "is-pressed" : ""
+                        });
+                    }
                 </div>
             </div>
 
-            <div class="card-body game-desc d-flex flex-column">
-                <div class="d-flex flex-row">
-                    <img class="game-image" src="@($"/data/games/{Model.Game.Alias}/image.png")" />
-
-                    <p>
-                        @Model.Game.Description
-                    </p>
-                </div>
-
-                <div>
-                    <input type="button" class="btn btn-primary" value="@(!Model.InCollection ? "Favorite" : "Unfavorite")" 
-                        onclick="location.href='@Url.Action("AddToCollection", "games",
-                        new { alias = Model.Game.Alias })'" 
-                    />
-                    <input type="button" class="btn btn-primary" value="Edit" 
-                        onclick="location.href='@Url.Action("manage", "games",
-                        new { alias = Model.Game.Alias })'" 
-                    />
-                    <input type="button" class="btn btn-primary" value="Add match" 
-                        onclick="location.href='@Url.Action("match", "games",
-                        new { alias = Model.Game.Alias })'" 
-                    />
-                </div>
-
-                <div>
-
-                    <div class="rating">
-                        @for (int i = 0; i < 10; i++)
-                        {
-                            @RatingStar(new { 
-                                index = i,
-                                pressed = i < GetRating() ? "is-pressed" : ""
-                            });
-                        }
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        </div>     
+    </div>    
     
+    <div>
+        <p class="entity-description">@Model.Game.Description</p>
+    </div>
+
+    
+
 </div>
 
 @section Scripts

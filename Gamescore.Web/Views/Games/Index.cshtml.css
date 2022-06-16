@@ -1,18 +1,1 @@
-﻿/* Icon section */
-.card.entity .icon-set {
-    min-width: 7.5rem;
-    justify-self: right;
-    margin: 0 0 0 auto;
-}
-.card.entity .icon-set > .game-icon {
-    display: flex;
-    font-size: small;
-    color: gray;
-    margin: 0.12em;
-    align-items: center;
-}
-.card.entity .icon-set > .game-icon > .icon {
-    width: 25px;
-    height: 25px;
-    margin-right: 0.5em;
-}
+﻿

@@ -1,37 +1,44 @@
-﻿.game {
-    max-width: 70%;
-    margin: 0.5em 0;
+﻿
+.entity-image.big {
+    margin-right: 1em;
 }
 
-.game-point {
-    min-width: 78px;
+.title-secondary {
+    font-size: larger;
 }
 
-.game-point .game-icon {
-    display: flex;
-    font-size: small;
-    color: gray;
-    margin: 0.2em;
+#main-tab {
+    margin-bottom: 1rem;
 }
 
-.icon-small {
-    width: 25px;
-    height: 25px;
+.action-buttons {
+    margin-top: 0.5em;
 }
 
-.game-icon img {
+.action-buttons input {
+    margin-right: 0.1em;
+}
+
+.rating-section {
+    margin-top: 0.5em;
+}
+
+.rating-section > p {
+    font-weight: bold;
     margin-right: 0.5em;
 }
 
-.game-image {
-    float: left;
-    margin: 0 0.8em 0.8em 0;
-    width: 100px;
-    height: 100px;
+/* Star animation */
+
+.rating {
+    width: max-content;
+    display: flex;
 }
 
 .icon-star {
     transition: 0.4s ease-out;
+    width: 22px;
+    height: 22px;
 }
 
 .icon-star.is-active, .icon-star.is-pressed {
@@ -42,3 +49,4 @@
 .rating:hover .icon-star.is-pressed:not(.is-active) {
     filter: none;
 }
+
