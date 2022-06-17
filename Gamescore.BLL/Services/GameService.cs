@@ -182,6 +182,18 @@ namespace Gamescore.BLL.Services
 
             return true;
         }
+
+        public async Task<IEnumerable<Match>> GetLoggedPlays(AppUser owner, Game game)
+        {
+            var matches = await uow.Matches.GetAll(
+                m => m.Game.Id == game.Id && m.Players.Any(
+                    mp => mp.Player.UserPlayerId == owner.Id
+                ), 
+                "Game", "Players", "Players.Player"                
+            );
+
+            return matches;
+        }
     }
 
     public interface IGameService
@@ -195,5 +207,6 @@ namespace Gamescore.BLL.Services
         public Task<float?> GetSiteRating(Game game);
         public Task UploadGameImage(Game game, string basePath);
         public Task<bool> AddMatch(AppUser requestedFrom, Match match, List<PlayerDTO> players);
+        public Task<IEnumerable<Match>> GetLoggedPlays(AppUser owner, Game game);
     }
 }

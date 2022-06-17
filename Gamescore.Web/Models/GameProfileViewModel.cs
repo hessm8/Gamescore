@@ -15,7 +15,11 @@ namespace Gamescore.Web.Models
             model.Rating = await service.GetRating(game, user);
             model.SiteRating = await service.GetSiteRating(game);
 
-            if (user != null) model.InCollection = user.GamesFavorited.Contains(game);
+            if (user != null)
+            {
+                model.InCollection = user.GamesFavorited.Contains(game);
+                model.LoggedPlays = await service.GetLoggedPlays(user, game);
+            }
 
             return model;
         }
@@ -23,6 +27,8 @@ namespace Gamescore.Web.Models
         public Game Game { get; set; } = null!;
         public Rating? Rating { get; set; }
         public float? SiteRating { get; set; }
+
+        public IEnumerable<Match>? LoggedPlays { get; set; }
         
         public bool InCollection { get; set; }
     }

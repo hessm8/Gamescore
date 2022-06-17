@@ -62,7 +62,7 @@
                     onclick="location.href='@Url.Action("manage", "games",
                     new { alias = Model.Game.Alias })'" 
                 />
-                <input type="button" class="btn btn-primary" value="Add match" 
+                <input type="button" class="btn btn-primary" value="Log play" 
                     onclick="location.href='@Url.Action("match", "games",
                     new { alias = Model.Game.Alias })'" 
                 />
@@ -106,12 +106,15 @@
 
     <hr />
 
-    <h4>Last played</h4>
-    <div>        
-        <p>Test</p>
-        <p></p>
-    </div>    
-
+    @if (Model.LoggedPlays != null) {
+        <h4>Last played</h4>
+        <div>        
+            @foreach (var play in Model.LoggedPlays)
+            {
+                <p>@play.Game.Name - @play.Date</p>
+            }
+        </div>    
+    }
 </div>
 
 @section Scripts
