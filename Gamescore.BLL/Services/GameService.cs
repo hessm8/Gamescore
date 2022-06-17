@@ -88,6 +88,17 @@ namespace Gamescore.BLL.Services
             return userRating;
         }
 
+        public async Task<float?> GetSiteRating(Game game)
+        {            
+            var ratings = await uow.Ratings.GetAll(r => r.GameId == game.Id);
+            int count = ratings.Count();
+
+            if (count == 0) return null;
+
+            var siteRating = ratings.Sum(r => r.AvgRating) / count;
+            return (float)Math.Round(siteRating, 2);
+        }
+
         public async Task UploadGameImage(Game game, string basePath)
         {           
             // Create directory for game if needed
@@ -181,6 +192,7 @@ namespace Gamescore.BLL.Services
         public Task<Game?> GetByName(string alias);
         public Task<bool> RateGame(Game game, AppUser user, int rating);
         public Task<Rating?> GetRating(Game game, AppUser user);
+        public Task<float?> GetSiteRating(Game game);
         public Task UploadGameImage(Game game, string basePath);
         public Task<bool> AddMatch(AppUser requestedFrom, Match match, List<PlayerDTO> players);
     }

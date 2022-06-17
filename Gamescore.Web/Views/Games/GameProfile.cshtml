@@ -31,7 +31,7 @@
         <div id="info">
             <div class="entity-text">
                 <h2><a href="~/game/@Model.Game.Alias">@Model.Game.Name</a> (@Model.Game.NameLocalized)</h2>
-                <p class="title-secondary">@Model.Game.ReleaseDate</p>
+                <p class="title-secondary big">@Model.Game.ReleaseDate</p>
             
             </div>
 
@@ -81,14 +81,36 @@
                 </div>
             </div>
 
+            
+            <div class="rating-section d-flex flex-row">
+                @if (@Model.SiteRating != null) {
+                    <p>Average rating:</p>
+                    <span>@Model.SiteRating</span>
+                } else
+                {
+                    <span>Be the first to rate this game!</span>
+                }
+            </div>
+
         </div>     
     </div>    
     
     <div>
+        <h4>Description</h4>
         <p class="entity-description">@Model.Game.Description</p>
+        @if (string.IsNullOrEmpty(@Model.Game.Description))
+        {
+            <p class="title-secondary">Add description using 'Edit'</p>
+        }
     </div>
 
-    
+    <hr />
+
+    <h4>Last played</h4>
+    <div>        
+        <p>Test</p>
+        <p></p>
+    </div>    
 
 </div>
 
