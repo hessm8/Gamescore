@@ -3,18 +3,26 @@
     ViewData["Title"] = "Manage game";
 }
 
-<div>
+<div id="manage-page">
+
+    @if (Model.IsEditing) {
+        <a href="~/game/@Model.Game.Alias">Return to game page</a>
+    } else
+    {
+        <a href="~/games">Return to all games</a>
+    }
+
     @using (Html.BeginForm("Manage", "Games", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
-        <div class="card" style="width:40%">
+        <div class="card">
 
             <div class="card-header">
                 @(!Model.IsEditing ? "Add" : "Edit") game
             </div>
 
-            <div class="card-body">
+            <div class="card-body">                
 
                 <div class="form-group" style="color:red;">@Html.ValidationMessageFor(model => model.Game.Alias)</div>
 
@@ -24,7 +32,10 @@
                     <label for="game-alias">Alias</label>
                     <div class="input-group">
                         <span class="input-group-text" id="inputGroupPrepend2">games /</span>
-                        <input type="text" name="Game.Alias" class="form-control" id="game-alias" placeholder="URL adress for game" value="@Model?.Game?.Alias" />
+                        <input type="text" name="Game.Alias" class="form-control" id="game-alias"
+                            placeholder="URL adress for game" value="@Model?.Game?.Alias" 
+                            @*disabled="@Model.IsEditing"*@
+                        />
                     </div>
 @*                    <div id="game-aliasFeedback" class="invalid-feedback">                      
                     </div>*@

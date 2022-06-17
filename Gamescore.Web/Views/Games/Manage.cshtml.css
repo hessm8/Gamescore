@@ -9,3 +9,13 @@
 .minmax input:first-child {
     margin-right: 0.5em;
 }
+
+#manage-page {
+    width: 40rem;
+    margin: auto;
+}
+
+.card {
+    margin-top: 1em;
+    margin-bottom: 1rem;
+}

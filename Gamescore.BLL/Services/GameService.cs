@@ -37,7 +37,7 @@ namespace Gamescore.BLL.Services
             var dbGame = await GetByName(game.Alias);
             if (dbGame == null) return false;
 
-            dbGame.Alias = game.Alias;
+            //dbGame.Alias = game.Alias;
             dbGame.Name = game.Name;            
             dbGame.NameLocalized = game.NameLocalized;
             dbGame.ReleaseDate = game.ReleaseDate;

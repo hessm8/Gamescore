@@ -99,6 +99,9 @@
         
     </div>
 
+    <p>Games in collection: @Model.User.GamesFavorited.Count</p>
+    <p>Games rated: @Model.User.GamesRated.Count</p>
+
     <hr />
         
     <h3>Collection
@@ -109,11 +112,18 @@
     </h3>
 
     <div class="profile-games">
-        <p>Games in collection: @Model.User.GamesFavorited.Count</p>
-        <p>Games rated: @Model.User.GamesRated.Count</p>
-        @foreach (var game in Model.User.GamesFavorited)
+
+
+        <div></div>
+
+        @foreach (var entity in Model.User.GamesFavorited)
         {
-            <p>* @game.Name</p>
+            <div class="item">            
+                <a href="~/game/@entity.Alias">
+                    <img class="entity-image small" title="@entity.Name" src="@($"/data/games/{entity.Alias}/image.png")" />
+                </a>
+
+            </div>
         }
     </div>    
     
