@@ -28,91 +28,102 @@
         </p>
     }
 
-    <div id="info" class="d-flex flex-row">
-        <div class="card user">
+    <div id="info" class="d-flex flex-row mb-4">
 
-            <div class="card-header">
+        <div class="main-info d-flex flex-column">
 
-                <div><h3>@Model.User.UserName</h3></div>
+            <h1 title="Username">@Model.User.UserName</h1>
+            @if (!string.IsNullOrEmpty(Model.User.FullName))
+            {
+                <p class="title-secondary" title="Full name">@Html.DisplayFor(m => m.User.FullName)</p>
+            }
 
+            <div class="user-info d-flex flex-column">                    
+                <p><span class="user-property">Gender:</span> @Html.DisplayFor(m => m.User.Gender)</p>
+                <p><span class="user-property">Last login:</span>  @LastLoginDisplay(Model.User.LastLoginTime)</p>
             </div>
 
-            <div class="card-body d-flex flex-column">
-
-                <div class="d-flex flex-column">                    
-                    <p>Name: @Html.DisplayFor(m => m.User.FullName)</p>
-                    <p>Gender: @Html.DisplayFor(m => m.User.Gender)</p>
-                    <p>Last login: @LastLoginDisplay(Model.User.LastLoginTime)</p>
-                </div>
+            <div class="user-info mt-4">
+                <h4>Game stats</h4>
+                <p>Owned: @Model.User.GamesFavorited.Count</p>
+                <p>Rated: @Model.User.GamesRated.Count</p>
             </div>
-        </div>
+        </div>        
 
         <div class="card friends">
 
-            <div class="card-header">
+            <div class="card-body d-flex flex-column">
 
                 <div><h3>Friends</h3></div>
-                @if (Model.LoggedIn && !Model.IsMe)
+
+                <ul class="friends-items">
+                @foreach (var friend in @Model.Friends)
                 {
-
-                    if (Model.Friendship == null)
-                    {
-                        <input type="button" class="btn btn-primary" value="Add as friend" 
-                            onclick="location.href='@Url.Action("ManageFriend", "user", 
-                            new { username = Model.User.UserName, requestAction = "add" })'" 
-                        />
-                    }    
-                    else if (Model.Friendship.Value.status == FriendStatus.Pending && !Model.Friendship.Value.received)
-                    {
-                        <p>You requested</p>
-
-                    } else if (Model.Friendship.Value.status == FriendStatus.Pending && Model.Friendship.Value.received)
-                    {
-                        <input type="button" class="btn btn-primary" value="Accept" 
-                            onclick="location.href='@Url.Action("ManageFriend", "user",
-                            new { username = Model.User.UserName, requestAction = "accept" })'" 
-                        />
-                        <input type="button" class="btn btn-danger" value="Decline" 
-                            onclick="location.href='@Url.Action("ManageFriend", "user", 
-                            new { username = Model.User.UserName, requestAction = "decline" })'" 
-                        />
-                    } 
-                }
-                else
-                {
-                    
-                }
-            </div>
-
-            <div class="card-body d-flex flex-column">
-@*                <p>
-                    REQUESTS:                        
-                </p>*@
-                    @foreach (var friend in @Model.Friends)
-                    {
-                        <p>
+                    <li>
                         <a href="~/user/@friend.UserName">@friend.UserName</a> 
-                        </p>
-                    }                    
+                    </li>
+                }    
+                </ul>
+
+                <div class="lower-block">
+                    <div class="friends-request">
+                        @if (Model.Friends.Count() < 1)
+                        {
+                            <p class="title-secondary">This user has no friends :(</p>
+                        }
+
+                        @if (Model.LoggedIn && !Model.IsMe)
+                        {
+
+                            if (Model.Friendship == null)
+                            {
+                                <input type="button" class="btn btn-primary" value="Add as friend" 
+                                    onclick="location.href='@Url.Action("ManageFriend", "user", 
+                                    new { username = Model.User.UserName, requestAction = "add" })'" 
+                                />
+                            }    
+                            else if (Model.Friendship.Value.status == FriendStatus.Pending && !Model.Friendship.Value.received)
+                            {
+                                <p>You've sent a friend request</p>
+
+                            } else if (Model.Friendship.Value.status == FriendStatus.Pending && Model.Friendship.Value.received)
+                            {
+                                <p class="title-secondary">This user sent you a friend request</p>
+                                <div class="buttons">
+                                    <input type="button" class="btn btn-primary" value="Accept" 
+                                        onclick="location.href='@Url.Action("ManageFriend", "user",
+                                        new { username = Model.User.UserName, requestAction = "accept" })'" 
+                                    />
+                                    <input type="button" class="btn btn-danger" value="Decline" 
+                                        onclick="location.href='@Url.Action("ManageFriend", "user", 
+                                        new { username = Model.User.UserName, requestAction = "decline" })'" 
+                                    />
+                                </div>
+                            } 
+                        }
+                    </div>
+                </div>
+
             </div>
         </div>
         
     </div>
 
-    <p>Games in collection: @Model.User.GamesFavorited.Count</p>
-    <p>Games rated: @Model.User.GamesRated.Count</p>
-
     <hr />
         
-    <h3>Collection
-    @if (Model.IsMe)
+    <h3>Collection</h3>
+
+    @*@if (Model.IsMe)
     {
         <button id="addGame" class="btn btn-secondary btn-sm" onclick="toggleModal()">+</button>
+    }*@
+
+    @if (Model.User.GamesFavorited.Count < 1)
+    {
+        <p class="title-secondary">This user's collection is empty...</p>
     }
-    </h3>
 
     <div class="profile-games">
-
 
         <div></div>
 
@@ -127,31 +138,27 @@
         }
     </div>  
     
-    @if (Model.LoggedPlays != null) {
+    @if (Model.LoggedPlays != null && Model.LoggedPlays.Count() > 0) {
         <h4>Last played</h4>
-        <div>        
+        <ul>        
             @foreach (var play in Model.LoggedPlays)
             {
-                <p>@play.Game.Name - @play.Date</p>
+                <li>@play.Game.Name - @play.Date.Value.ToShortDateString()</li>
             }
-        </div>    
+        </ul>    
     }
     
 </div>
 
-@Html.Partial("AddToCollection", new UserGameViewModel())
+@*@Html.Partial("AddToCollection", new UserGameViewModel())*@
 
 @section Scripts
 {
  <script>
 
-     //$( "#addGame" ).click(function() {
-     //   alert( "Handler for .click() called." );
-     //});
-
-     function toggleModal() {
-         $('.modal').toggle();
-     }
+     //function toggleModal() {
+     //    $('.modal').toggle();
+     //}
 
  </script>
 } 

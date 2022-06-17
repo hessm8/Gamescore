@@ -1,6 +1,7 @@
 ﻿
 .entity-image.big {
     margin-right: 1em;
+    align-self: center;
 }
 
 .title-secondary.big {

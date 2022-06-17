@@ -24,13 +24,18 @@
 
 <div id="entity">
     <div id="main-tab" class="d-flex flex-row justify-content-left">
-        <a href="~/game/@Model.Game.Alias/match">
+        <a class="d-flex" href="~/game/@Model.Game.Alias/match">
             <img class="entity-image big" src="@($"/data/games/{Model.Game.Alias}/image.png")" />
         </a>
 
         <div id="info">
             <div class="entity-text">
-                <h2><a href="~/game/@Model.Game.Alias">@Model.Game.Name</a> (@Model.Game.NameLocalized)</h2>
+                <h2><a href="~/game/@Model.Game.Alias">@Model.Game.Name</a> 
+                    @if (!string.IsNullOrEmpty(@Model.Game.NameLocalized))
+                    {
+                        <span>(@Model.Game.NameLocalized)</span>
+                    }
+                </h2>
                 <p class="title-secondary big">@Model.Game.ReleaseDate</p>
             
             </div>
@@ -106,12 +111,12 @@
 
     <hr />
 
-    @if (Model.LoggedPlays != null) {
+    @if (Model.LoggedPlays != null && Model.LoggedPlays.Count() > 0) {
         <h4>Last played</h4>
         <div>        
             @foreach (var play in Model.LoggedPlays)
             {
-                <p>@play.Game.Name - @play.Date</p>
+                <p>@play.Game.Name - @play.Date.Value.ToShortDateString()</p>
             }
         </div>    
     }
