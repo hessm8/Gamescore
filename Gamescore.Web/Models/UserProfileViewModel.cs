@@ -26,6 +26,8 @@ namespace Gamescore.Web.Models
 
             model.Friends = await service.GetFriends(model.User);
 
+            model.LoggedPlays = await service.GetLoggedPlays(model.User);
+
             return model;
         }
 
@@ -35,6 +37,8 @@ namespace Gamescore.Web.Models
         public bool LoggedIn { get; set; }
 
         public IEnumerable<Game> Collection { get; set; } = new List<Game>();
+
+        public IEnumerable<Match>? LoggedPlays { get; set; }
 
         public IEnumerable<AppUser> Friends { get; set; } = new List<AppUser>();
 

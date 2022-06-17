@@ -125,7 +125,17 @@
 
             </div>
         }
-    </div>    
+    </div>  
+    
+    @if (Model.LoggedPlays != null) {
+        <h4>Last played</h4>
+        <div>        
+            @foreach (var play in Model.LoggedPlays)
+            {
+                <p>@play.Game.Name - @play.Date</p>
+            }
+        </div>    
+    }
     
 </div>
 

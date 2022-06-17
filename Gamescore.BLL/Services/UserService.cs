@@ -158,6 +158,18 @@ namespace Gamescore.BLL.Services
 
             return true;
         }
+
+        public async Task<IEnumerable<Match>> GetLoggedPlays(AppUser owner)
+        {
+            var matches = await uow.Matches.GetAll(
+                m => m.Players.Any(
+                    mp => mp.Player.UserPlayerId == owner.Id
+                ),
+                "Game", "Players", "Players.Player"
+            );
+
+            return matches;
+        }
     }
 
     public interface IUserService
@@ -165,6 +177,7 @@ namespace Gamescore.BLL.Services
         public Task<IEnumerable<AppUser>> GetAll();
         public Task<IEnumerable<string>> GetSearchUsers(string search);
         public Task<bool> AddToCollection(AppUser user, string alias);
+        public Task<IEnumerable<Match>> GetLoggedPlays(AppUser owner);
         public Task<bool> ManageFriendRequest(ClaimsPrincipal User, string name, string action);
         Task<IEnumerable<AppUser>> GetFriends(AppUser user);
         Task<AppUser?> GetUser(string username);
