@@ -7,7 +7,7 @@ namespace Gamescore.Web.Models
 {
     public class GameProfileViewModel
     {
-        public static async Task<GameProfileViewModel?> Create(IGameService service, Game game, AppUser user)
+        public static async Task<GameProfileViewModel?> Create(IGameService service, Game game, AppUser? user)
         {
             var model = new GameProfileViewModel();
 

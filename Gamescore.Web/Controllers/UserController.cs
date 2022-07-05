@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Gamescore.Domain.Entities;
 using Gamescore.DAL;
 using Gamescore.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gamescore.Web.Controllers
 {

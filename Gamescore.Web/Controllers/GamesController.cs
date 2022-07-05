@@ -6,6 +6,7 @@ using System.Web;
 using Gamescore.Domain.Entities;
 using Gamescore.DAL;
 using Gamescore.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gamescore.Web.Controllers
 {
@@ -16,7 +17,7 @@ namespace Gamescore.Web.Controllers
         private readonly IUserService userService;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public GamesController(ILogger<GamesController> logger, 
+        public GamesController(ILogger<GamesController> logger,
             IGameService gameService, IUserService userService,
             IWebHostEnvironment webHostEnvironment)
         {
@@ -34,15 +35,12 @@ namespace Gamescore.Web.Controllers
         }
 
         #region Manage
-        public async Task<IActionResult> Manage(string? alias = null)
-        {           
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Account", new { area = "Identity" });
-            }
 
+        [HttpGet, Authorize]
+        public async Task<IActionResult> Manage(string? alias = null)
+        {
             if (alias == null)
-            {                
+            {
                 return View(new ManageGameViewModel(new Game(), false));
             }
 
@@ -55,6 +53,7 @@ namespace Gamescore.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Manage(ManageGameViewModel model)
         {
             if (!User.Identity.IsAuthenticated)
@@ -78,7 +77,7 @@ namespace Gamescore.Web.Controllers
                 if (!wasAdded)
                 {
                     ModelState.AddModelError("Alias", "The game under this alias or name already exists");
-                    
+
                     return View(model);
                 }
 
@@ -92,8 +91,7 @@ namespace Gamescore.Web.Controllers
 
         #region Game profile
 
-        [HttpGet]
-        [Route("game/{alias}")]
+        [HttpGet, Route("game/{alias}")]
         public async Task<IActionResult> GameProfile(string alias)
         {
             var game = await gameService.GetByName(alias);
@@ -106,25 +104,24 @@ namespace Gamescore.Web.Controllers
         }
 
         [Route("game/{alias}/rate")]
+        [Authorize]
         public async Task<IActionResult> RateGame(string alias, int rating)
         {
             var game = await gameService.GetByName(alias);
             if (game == null) return NotFound();
 
             var user = await userService.GetUser(User);
-            if (user == null) return RedirectToAction("Login", "Account", new { area = "Identity" });
 
-            await gameService.RateGame(game, user, rating);
+            await gameService.RateGame(game, user!, rating);
 
             return RedirectToAction("GameProfile", "games", new { alias });
         }
 
+        [Authorize]
         public async Task<IActionResult> AddToCollection(string alias)
         {
             var user = await userService.GetUser(User);
-            if (user == null) return RedirectToAction("Login", "Account", new { area = "Identity" });
-
-            await userService.AddToCollection(user, alias);
+            await userService.AddToCollection(user!, alias);
 
             return RedirectToAction("GameProfile", "games", new { alias });
         }
@@ -133,12 +130,10 @@ namespace Gamescore.Web.Controllers
 
         #region Matches
 
-        [Route("game/{alias}/match")]
+        [HttpGet, Route("game/{alias}/match")]
+        [Authorize]
         public async Task<IActionResult> Match(string? alias = null)
         {
-            var user = await userService.GetUser(User);
-            if (user == null) return RedirectToAction("Login", "Account", new { area = "Identity" });
-
             if (alias == null)
             {
                 return RedirectToAction("Index", "games");
@@ -158,15 +153,13 @@ namespace Gamescore.Web.Controllers
         public async Task<IActionResult> GetSearchUsers(string search)
         {
             var users = await userService.GetSearchUsers(search);
-
             return Ok(users);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> SubmitMatch([FromBody] MatchViewModel viewModel)
         {
             var requestedFrom = await userService.GetUser(User);
-            if (requestedFrom == null) return RedirectToAction("Login", "Account", new { area = "Identity" });
 
             var game = await gameService.GetByName(viewModel.GameAlias);
             if (game == null) return BadRequest();
@@ -180,7 +173,7 @@ namespace Gamescore.Web.Controllers
                 Place = viewModel.Place
             };
 
-            await gameService.AddMatch(requestedFrom, match, viewModel.Players);
+            await gameService.AddMatch(requestedFrom!, match, viewModel.Players);
 
             return Ok(viewModel);
         }
