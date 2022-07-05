@@ -31,8 +31,10 @@ namespace Gamescore.Web.Controllers
         public async Task<IActionResult> Index(string username)
         {
             //var user = await service.GetUser(User, username);
-            var user = await UserProfileViewModel.Create(service, User, username);
-            return user != null ? View("Index", user) : NotFound();
+            var viewModel = await UserProfileViewModel.Create(service, User, username);            
+            if (viewModel == null) return NotFound();
+
+            return View(viewModel);
         }
 
         [Route("users")]
@@ -40,11 +42,6 @@ namespace Gamescore.Web.Controllers
         {
             return View(await service.GetAll());
         }
-
-        //public IActionResult AddToCollection()
-        //{
-        //    return PartialView("AddToCollection", null);
-        //}
 
         public ActionResult AddToCollection()
         {
